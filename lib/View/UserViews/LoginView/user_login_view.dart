@@ -52,6 +52,19 @@ class UserLoginView extends StatelessWidget {
                         )
                       ],
                     ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () =>
+                            userLoginController.onRegisterButtonPressed(),
+                        child: const Text(
+                          "Hesabın mı yok? Hemen üye ol",
+                          style: TextStyle(
+                            color: mainColor,
+                          ),
+                        ),
+                      ),
+                    ),
                     loginButton,
                   ],
                 ),

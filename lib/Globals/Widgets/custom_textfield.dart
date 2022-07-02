@@ -22,14 +22,6 @@ class CustomTextField extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(2),
-        boxShadow: const [
-          BoxShadow(
-            offset: Offset(0, 0),
-            color: Colors.grey,
-            spreadRadius: 1,
-            blurRadius: 5,
-          )
-        ],
       ),
       child: TextField(
         obscureText: obscureText,
