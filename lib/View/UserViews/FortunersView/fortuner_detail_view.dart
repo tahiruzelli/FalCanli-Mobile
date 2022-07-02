@@ -2,7 +2,9 @@ import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
+import 'package:falcanli/View/UserViews/VideoCallView/video_call_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class FortunerDetailView extends StatelessWidget {
   @override
@@ -10,7 +12,7 @@ class FortunerDetailView extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(title: "Ayşa Fatma"),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: ()=> Get.to(VideoCallView()),
         label: const Text("Falcı ile görüş!"),
         backgroundColor: mainColor,
       ),

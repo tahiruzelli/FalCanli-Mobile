@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
     this.prefixText,
     this.controller, {
     this.obscureText = false,
-    this.textInputType = TextInputType.none,
+    this.textInputType = TextInputType.text,
     this.toLowerCase = false,
   });
 
@@ -33,14 +33,6 @@ class CustomTextField extends StatelessWidget {
         ),
         maxLength: 30,
         cursorColor: mainColor,
-        onChanged: (text) {
-          if (toLowerCase) {
-            controller.text = text.toLowerCase();
-            controller.text = controller.text.trim();
-            controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: controller.text.length));
-          }
-        },
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 10),
           border: InputBorder.none,
