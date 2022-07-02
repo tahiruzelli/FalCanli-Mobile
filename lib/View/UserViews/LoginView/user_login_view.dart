@@ -31,7 +31,10 @@ class UserLoginView extends StatelessWidget {
                         "E-Mail", userLoginController.emailController),
                     const SizedBox(height: 20),
                     CustomTextField(
-                        "Şifre", userLoginController.passwordController),
+                      "Şifre",
+                      userLoginController.passwordController,
+                      obscureText: true,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -83,24 +86,27 @@ class UserLoginView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
-        elevation: 5.0,
-        onPressed: () {},
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.white,
-        child: const Text(
-          'Giriş Yap',
-          style: TextStyle(
-            color: mainColor,
-            letterSpacing: 1.5,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
+          elevation: 5.0,
+          onPressed: () => userLoginController.onLoginButtonPressed(),
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
           ),
-        ),
-      ),
+          color: Colors.white,
+          child: Obx(
+            () => Text(
+              userLoginController.isLoginLoading.value
+                  ? "Yükleniyor..."
+                  : 'Giriş Yap',
+              style: const TextStyle(
+                color: mainColor,
+                letterSpacing: 1.5,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'OpenSans',
+              ),
+            ),
+          )),
     );
   }
 }

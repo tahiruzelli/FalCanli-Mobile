@@ -64,9 +64,14 @@ class UserRegisterView extends StatelessWidget {
                           : BirthTimePicker(),
                     ),
                     const SizedBox(height: 30),
-                    BigButton("Üye Ol", () {
-                      userRegisterController.onRegisterButtonPressed();
-                    })
+                    Obx(
+                      () => BigButton(
+                          userRegisterController.registerLoading.value
+                              ? "Yükleniyor..."
+                              : "Üye Ol", () {
+                        userRegisterController.onRegisterButtonPressed();
+                      }),
+                    )
                   ],
                 ),
                 Container(),
