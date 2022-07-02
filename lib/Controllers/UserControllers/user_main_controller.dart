@@ -1,7 +1,6 @@
 import 'package:falcanli/View/UserViews/FortunersView/fortuner_list_view.dart';
 import 'package:falcanli/View/UserViews/GetCreditView/get_credit_view.dart';
 import 'package:falcanli/View/UserViews/ProfileView/user_profile_view.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserMainController extends GetxController {
@@ -27,5 +26,9 @@ class UserMainController extends GetxController {
     } else {
       return "";
     }
+  }
+
+  get getBodyPages {
+    return bodyPages[currentPageIndex.value];
   }
 }
