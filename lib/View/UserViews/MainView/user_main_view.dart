@@ -17,7 +17,15 @@ class UserMainView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: customAppBar(title: userMainController.getAppBarTitle()),
+        appBar: customAppBar(
+          title: userMainController.getAppBarTitle(),
+          action: userMainController.currentPageIndex.value == 2
+              ? IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.settings),
+                )
+              : null,
+        ),
         body: userMainController.getBodyPages,
         bottomNavigationBar: BottomNavigationBar(
           onTap: (int index) => userMainController.changePage(index),
