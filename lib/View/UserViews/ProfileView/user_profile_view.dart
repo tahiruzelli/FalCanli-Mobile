@@ -1,3 +1,4 @@
+import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,7 @@ class UserProfileView extends StatelessWidget {
               const CircleAvatar(
                 minRadius: 50,
                 maxRadius: 100,
-                backgroundImage: NetworkImage(
-                  "https://www.neoldu.com/d/other/ruyada-insan-gormek-001.jpg",
-                ),
+                backgroundImage: NetworkImage(emptyUser),
               ),
               const SizedBox(height: 30),
               DetailLine("Adi", "Tahir Uzelli"),
