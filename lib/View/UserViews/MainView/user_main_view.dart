@@ -1,11 +1,13 @@
 import 'package:falcanli/Controllers/UserControllers/user_main_controller.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
+import 'package:falcanli/View/UserViews/ProfileView/Pages/complete_profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../../../Controllers/UserControllers/UserProfileController/user_profile_controller.dart';
 import '../../../Globals/Constans/colors.dart';
 
 class UserMainView extends StatelessWidget {
+  UserProfileController profileController = Get.put(UserProfileController());
   UserMainController userMainController = Get.put(UserMainController());
   Color getIconColor(int index) {
     return userMainController.currentPageIndex.value != index
@@ -21,7 +23,9 @@ class UserMainView extends StatelessWidget {
           title: userMainController.getAppBarTitle(),
           action: userMainController.currentPageIndex.value == 2
               ? IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(CompleteProfileView());
+                  },
                   icon: const Icon(Icons.settings),
                 )
               : null,

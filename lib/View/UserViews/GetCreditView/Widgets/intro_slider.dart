@@ -50,6 +50,7 @@ class IntroSlider extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           const SizedBox(height: 16),
           Text(
