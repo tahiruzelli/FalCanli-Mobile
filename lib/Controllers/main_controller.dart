@@ -10,7 +10,9 @@ class MainController extends GetxController {
   
   void pushPage() {
     if (GetStorage().read(jwtTokenKey) == null) {
-      Get.offAll(UserLoginView());
+      // Get.offAll(UserLoginView());
+      //TODO bunu duzelt
+      Get.offAll(UserMainView());
     } else {
       //some one loginned
       bool? isUser = GetStorage().read(isUserKey);

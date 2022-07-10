@@ -7,8 +7,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
 const token =
-    "0064bc8ddcf1ed7459d8482cbfa369dfe88IABEUfGl/s0myOOao8uwPErH2fxU4b96zWyvuzSaf/qwhTuSu74AAAAAEACiqr7MXRvCYgEAAQBcG8Ji";
-const channel = "tahiruzellitest";
+    "0064bc8ddcf1ed7459d8482cbfa369dfe88IAB35fGbEpsaeliZJs2X/ehpjPTeIXxXj6XnPhlNxUw3uP1ojLoAAAAAEADLkLYogr7JYgEAAQCBvsli";
+const channel = "tahirtest";
 
 class VideoCallView extends StatefulWidget {
   @override

@@ -1,18 +1,22 @@
+import 'package:falcanli/Controllers/UserControllers/FortunerController/fortuner_controller.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
-import 'package:falcanli/View/UserViews/VideoCallView/video_call_view.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
 class FortunerDetailView extends StatelessWidget {
+  late int index;
+  late FortunerController fortunerController;
+  FortunerDetailView(this.index, this.fortunerController);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(title: "Ayşa Fatma"),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: ()=> Get.to(VideoCallView()),
+        onPressed: () =>
+            fortunerController.onGoLiveWithFortunerButtonPressed(index % 3),
         label: const Text("Falcı ile görüş!"),
         backgroundColor: mainColor,
       ),
@@ -23,11 +27,36 @@ class FortunerDetailView extends StatelessWidget {
           ListView(
             children: [
               const SizedBox(height: 30),
-              const CircleAvatar(
-                minRadius: 50,
-                maxRadius: 100,
-                backgroundImage: NetworkImage(
-                  "https://play-lh.googleusercontent.com/mwLEUp9QssZBnOZPcfAeRULCU2550Ofa_WK5CY9Omo8LHlrY08_h1BnXzKyHp9_zhfzg",
+              SizedBox(
+                height: Get.height * 0.2,
+                width: Get.width,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: Get.height * 0.2,
+                      width: Get.width * 0.8,
+                      child: const CircleAvatar(
+                        minRadius: 50,
+                        maxRadius: 100,
+                        backgroundImage: NetworkImage(
+                          "https://play-lh.googleusercontent.com/mwLEUp9QssZBnOZPcfAeRULCU2550Ofa_WK5CY9Omo8LHlrY08_h1BnXzKyHp9_zhfzg",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(right: Get.width * 0.05),
+                      child: SizedBox(
+                        height: Get.height * 0.2,
+                        width: Get.width * 0.15,
+                        child: Image.asset(
+                          "assets/images/${index % 3 == 0 ? "trafficRed" : index % 3 == 1 ? "trafficYellow" : "trafficGreen"}.png",
+                          fit: BoxFit.cover,
+                          height: Get.height * 0.2,
+                          width: Get.width * 0.15,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 30),
@@ -53,7 +82,7 @@ class FortunerDetailView extends StatelessWidget {
               )
             ],
           ),
-           Center(
+          Center(
             child: RotationTransition(
               turns: const AlwaysStoppedAnimation(45 / 360),
               child: Text(
