@@ -1,4 +1,4 @@
-import 'package:falcanli/Controllers/UserControllers/FortunerController/fortuner_controller.dart';
+import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import 'package:falcanli/View/UserViews/FortunersView/Widgets/proffesion_line.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +17,15 @@ class FortunerCard extends StatelessWidget {
     required this.dogumHaritasi,
     required this.astroloji,
   });
-  FortunerController fortunerController = Get.find();
+  UserFortunerController fortunerController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
       child: Card(
         child: ListTile(
-          onTap: () => fortunerController.onFortunerCardPressed(index,fortunerController),
+          onTap: () => fortunerController.onFortunerCardPressed(
+              index, fortunerController),
           leading: const CircleAvatar(
             backgroundImage: NetworkImage(
                 "https://www.turuncufalcafe.com/fal-fotograflar/2019/03/falcihelen.jpg"),
@@ -76,7 +77,7 @@ class FortunerCard extends StatelessWidget {
                   ],
                 ),
               ),
-              index % 3 == 0
+              index % 3 == 2
                   ? const Text(
                       "Müsait",
                       style: TextStyle(color: Colors.green),

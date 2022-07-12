@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Fal Canlı kahve fotoğrafınızı falcıya iletmek için galerinize ihtiyaç duyuyor</string>
 	<key>CFBundleDisplayName</key>
 	<string>Falcanli</string>
 	<key>CFBundleExecutable</key>
@@ -25,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Fal Canlı görüntülü görüşmeler için kamera izni istemektedir.</string>
+	<string>Fal Canlı görüntülü görüşmeler ve falcınıza kahve fotoğrafı iletmek için kamera izni istemektedir.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Fal Canlı görüntülü görüşmeler için mikrofon izni istemektedir.</string>
 	<key>UIBackgroundModes</key>

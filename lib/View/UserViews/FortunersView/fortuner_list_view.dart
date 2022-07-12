@@ -1,4 +1,4 @@
-import 'package:falcanli/Controllers/UserControllers/FortunerController/fortuner_controller.dart';
+import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:falcanli/View/UserViews/FortunersView/Widgets/filter_select_area.dart';
@@ -9,7 +9,7 @@ import 'package:get/instance_manager.dart';
 import 'Widgets/fortuner_card.dart';
 
 class FortunerListView extends StatelessWidget {
-  FortunerController fortunerController = Get.put(FortunerController());
+  UserFortunerController fortunerController = Get.put(UserFortunerController());
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(

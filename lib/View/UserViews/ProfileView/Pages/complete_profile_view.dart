@@ -19,7 +19,7 @@ class CompleteProfileView extends StatelessWidget {
         label: const Text("Bilgileri Kaydet"),
         backgroundColor: mainColor,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Column(
         children: [
           MarialStatusPicker(),

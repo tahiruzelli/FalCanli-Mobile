@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
@@ -20,6 +23,12 @@ class _MyAppState extends State<VideoCallView> {
   bool _localUserJoined = false;
   late RtcEngine _engine;
   bool muted = false;
+  bool showToolBar = true;
+  List<String> imageLinks = [
+    "https://i2.milimaj.com/i/milliyet/75/0x410/5c8d168007291c1d740169dc.jpg",
+    "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
+    "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
+  ];
 
   @override
   void initState() {
@@ -69,23 +78,89 @@ class _MyAppState extends State<VideoCallView> {
       ),
       body: Stack(
         children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                showToolBar = !showToolBar;
+              });
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.transparent,
+            ),
+          ),
           Center(
             child: _remoteVideo(),
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: SizedBox(
-              width: 100,
-              height: 150,
-              child: Center(
-                child: _localUserJoined
-                    ? const RtcLocalView.SurfaceView()
-                    : const CircularProgressIndicator(),
+            child: Card(
+              child: SizedBox(
+                width: 100,
+                height: 150,
+                child: Center(
+                  child: _localUserJoined
+                      ? const RtcLocalView.SurfaceView()
+                      : LoadingIndicator(),
+                ),
               ),
             ),
           ),
-          toolbar
+          showToolBar ? toolbar : photos,
         ],
+      ),
+    );
+  }
+
+  Widget get photos {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox(
+        height: 150,
+        width: MediaQuery.of(context).size.width,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(
+            imageLinks.length,
+            (index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: () {
+                      Get.dialog(
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Get.width / 10,
+                            vertical: Get.height / 5,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  imageLinks[index],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Image.network(
+                      imageLinks[index],
+                      height: 150,
+                      width: MediaQuery.of(context).size.width / 4,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -147,7 +222,7 @@ class _MyAppState extends State<VideoCallView> {
       );
     } else {
       return const Text(
-        'Please wait for remote user to join',
+        'Diğer katılımcı bekleniyor',
         textAlign: TextAlign.center,
       );
     }
