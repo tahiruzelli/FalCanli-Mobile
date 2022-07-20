@@ -67,6 +67,7 @@ class UserFortunerController extends GetxController {
           Get.to(AddPhotoView());
           break;
         case FortuneType.astrology:
+          startVideoCall();
           break;
         case FortuneType.natalChart:
           startVideoCall();

@@ -2,11 +2,15 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:falcanli/Controllers/UserControllers/LiveVideoController/live_video_controller.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'end_video_call.dart';
 
 const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
 const token =
@@ -29,7 +33,7 @@ class _MyAppState extends State<VideoCallView> {
     "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
     "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
   ];
-
+  LiveVideoController liveVideoController = Get.put(LiveVideoController());
   @override
   void initState() {
     super.initState();
@@ -230,7 +234,7 @@ class _MyAppState extends State<VideoCallView> {
 
   void _onCallEnd(BuildContext context) {
     _engine.leaveChannel();
-    Navigator.pop(context);
+    Get.offAll(EndVideoCall());
   }
 
   void _onToggleMute() {

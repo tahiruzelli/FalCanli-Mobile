@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   late bool obscureText;
   late TextInputType textInputType;
   late bool toLowerCase;
+  late bool isWhite;
 
   CustomTextField(
     this.prefixText,
@@ -14,13 +15,14 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.textInputType = TextInputType.text,
     this.toLowerCase = false,
+    this.isWhite = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isWhite ? Colors.white : iosGreyColor,
         borderRadius: BorderRadius.circular(2),
       ),
       child: TextField(
@@ -31,7 +33,6 @@ class CustomTextField extends StatelessWidget {
           color: mainColor,
           fontSize: 12,
         ),
-        maxLength: 30,
         cursorColor: mainColor,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 10),
