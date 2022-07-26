@@ -39,6 +39,7 @@ dependencies:
   get: ^4.6.5
   get_storage: ^2.0.3
   http: ^0.13.4
+  dio: ^4.0.6
   intl: ^0.17.0
   agora_rtc_engine: ^5.2.0
   permission_handler: ^10.0.0

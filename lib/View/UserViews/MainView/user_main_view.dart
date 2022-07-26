@@ -3,6 +3,7 @@ import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
 import 'package:falcanli/View/UserViews/LoginView/user_login_view.dart';
 import 'package:falcanli/View/UserViews/ProfileView/Pages/complete_profile_view.dart';
+import 'package:falcanli/View/UserViews/StaticPages/faq_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
@@ -53,7 +54,7 @@ class UserMainView extends StatelessWidget {
                 child: Image.network(emptyUser),
               ),
               ListTile(
-                onTap: () {},
+                onTap: ()=>Get.to(FaqView()),
                 leading: const Icon(Icons.question_answer_outlined),
                 title: const Text("S.S.S."),
               ),

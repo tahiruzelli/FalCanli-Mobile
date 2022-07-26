@@ -1,9 +1,14 @@
+import 'package:falcanli/Globals/Utils/booleans.dart';
+import 'package:falcanli/Globals/Utils/date_time.dart';
 import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
+import 'package:falcanli/Repository/User/RegisterRepository/register_repository.dart';
 import 'package:falcanli/View/UserViews/LoginView/user_login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserRegisterController extends GetxController {
+  RegisterRepository registerRepository = RegisterRepository();
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -16,6 +21,7 @@ class UserRegisterController extends GetxController {
   RxBool registerLoading = false.obs;
 
   RxString birtDateString = "".obs;
+  RxString sexStatus = "Kadın".obs;
 
   void onRegisterButtonPressed() {
     if (!registerLoading.value) {
@@ -30,13 +36,24 @@ class UserRegisterController extends GetxController {
       } else if (!birtTimeOpen.value && birthTime == null) {
         warningSnackBar("Doğum zamanınız boş kalamaz");
       } else {
-        //TODO register
         registerLoading.value = true;
-        Future.delayed(const Duration(seconds: 2), () {
+        registerRepository
+            .register(
+          name: nameController.text,
+          lastName: "",
+          password: passwordController.text,
+          email: emailController.text,
+          birthday: dateToTimeStamp(birthDate ?? DateTime.now()),
+          gender: sexStatus.value.toLowerCase(),
+        )
+            .then((value) {
           registerLoading.value = false;
-          Get.offAll(UserLoginView());
+          if (isHttpOK(value['statusCode'])) {
+            Get.offAll(UserLoginView());
+          } else {
+            warningSnackBar(value['message']);
+          }
         });
-        print("register");
       }
     }
   }

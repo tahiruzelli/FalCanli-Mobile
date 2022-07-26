@@ -8,7 +8,9 @@ class RegisterCompleteView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Stack(
-          children: [GradiendContainer()],
+          children: [
+            GradiendContainer(),
+          ],
         ),
       ),
     );

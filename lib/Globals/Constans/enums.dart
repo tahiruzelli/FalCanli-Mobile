@@ -4,3 +4,8 @@ enum FortuneType{
   natalChart,
   tarot,
 }
+
+enum UserType{
+  user,
+  fortuner,
+}

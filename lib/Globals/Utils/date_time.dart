@@ -6,3 +6,7 @@ String formatDateTime(DateTime date) {
 
   return outputDate.toString().split(" ")[0];
 }
+
+String dateToTimeStamp(DateTime date) {
+  return date.toString().split(" ")[0] + "T" + date.toString().split(" ")[1];
+}

@@ -2,6 +2,7 @@ import 'package:falcanli/Controllers/UserControllers/RegisterController/user_reg
 import 'package:falcanli/Globals/Widgets/big_button.dart';
 import 'package:falcanli/Globals/Widgets/custom_textfield.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
+import 'package:falcanli/View/UserViews/ProfileView/Pages/Widgets/sex_picker.dart';
 import 'package:falcanli/View/UserViews/RegisterView/Widgets/birt_date_picker.dart';
 import 'package:falcanli/View/UserViews/RegisterView/Widgets/birth_time_picker.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,7 @@ class UserRegisterView extends StatelessWidget {
                           ? Container()
                           : BirthTimePicker(),
                     ),
+                    SexPicker(),
                     const SizedBox(height: 30),
                     Obx(
                       () => BigButton(

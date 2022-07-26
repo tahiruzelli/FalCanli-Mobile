@@ -1,10 +1,10 @@
+import 'package:falcanli/Controllers/UserControllers/RegisterController/user_register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../Controllers/UserControllers/UserProfileController/user_profile_controller.dart';
 import '../../../../../Globals/Constans/colors.dart';
 
 class SexPicker extends StatelessWidget {
-  UserProfileController profileController = Get.find();
+  UserRegisterController registerController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,7 +22,7 @@ class SexPicker extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16.0),
             child: Obx(
               () => DropdownButton<String>(
-                value: profileController.sexStatus.value,
+                value: registerController.sexStatus.value,
                 elevation: 16,
                 style: const TextStyle(color: mainColor),
                 underline: Container(
@@ -30,7 +30,7 @@ class SexPicker extends StatelessWidget {
                   color: mainColor,
                 ),
                 onChanged: (String? newValue) {
-                  profileController.sexStatus.value = newValue!;
+                  registerController.sexStatus.value = newValue!;
                 },
                 items: [
                   "Kadın",
