@@ -7,13 +7,15 @@ import 'package:falcanli/View/UserViews/StaticPages/faq_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
-import '../../../Controllers/UserControllers/UserProfileController/user_profile_controller.dart';
+import 'package:get_storage/get_storage.dart';
+import '../../../Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import '../../../Globals/Constans/colors.dart';
+import '../../../Globals/Constans/storage_keys.dart';
 
 class UserMainView extends StatelessWidget {
   final _advancedDrawerController = AdvancedDrawerController();
-  UserProfileController profileController = Get.put(UserProfileController());
   UserMainController userMainController = Get.put(UserMainController());
+  UserFortunerController fortunerController = Get.put(UserFortunerController());
   Color getIconColor(int index) {
     return userMainController.currentPageIndex.value != index
         ? mainColor
@@ -54,7 +56,7 @@ class UserMainView extends StatelessWidget {
                 child: Image.network(emptyUser),
               ),
               ListTile(
-                onTap: ()=>Get.to(FaqView()),
+                onTap: () => Get.to(FaqView()),
                 leading: const Icon(Icons.question_answer_outlined),
                 title: const Text("S.S.S."),
               ),
@@ -71,6 +73,9 @@ class UserMainView extends StatelessWidget {
               const Spacer(),
               ListTile(
                 onTap: () {
+                  GetStorage().remove(jwtTokenKey);
+                  GetStorage().remove(userDataKey);
+                  GetStorage().remove(isUserKey);
                   Get.offAll(UserLoginView());
                 },
                 leading: const Icon(

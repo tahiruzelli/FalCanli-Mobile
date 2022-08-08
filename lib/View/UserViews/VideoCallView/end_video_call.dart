@@ -48,7 +48,7 @@ class EndVideoCall extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                "assets/images/logo.jpeg",
+                "assets/images/logo_text.png",
                 height: MediaQuery.of(context).size.height * 0.3,
                 width: MediaQuery.of(context).size.width,
                 fit: BoxFit.cover,

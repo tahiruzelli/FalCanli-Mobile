@@ -33,10 +33,10 @@ class RegisterRepository implements IRegisterRepository {
     };
     var jsonBody = const JsonEncoder().convert(body);
     var response = await RestConnector(
-      baseUrl + registerUrl,
+      baseUrl + userUrl,
       "",
       data: jsonBody,
-      requestType: "POST",
+      requestType: RequestType.post,
     ).getData();
     return response;
   }

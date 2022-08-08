@@ -30,14 +30,11 @@ class FortunerListView extends StatelessWidget {
                               child: LoadingIndicator(),
                             )
                           : ListView.builder(
-                              itemCount: 10,
+                              itemCount: fortunerController.fortunerList.length,
                               itemBuilder: (context, index) {
                                 return FortunerCard(
-                                  index: index,
-                                  tarot: false,
-                                  dogumHaritasi: false,
-                                  kahve: false,
-                                  astroloji: true,
+                                  fortuner:
+                                      fortunerController.fortunerList[index],
                                 );
                               },
                             ),

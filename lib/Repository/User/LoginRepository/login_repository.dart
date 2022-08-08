@@ -19,7 +19,7 @@ class LoginRepository implements ILoginRepository {
       baseUrl + loginUrl,
       "",
       data: jsonBody,
-      requestType: "POST",
+      requestType: RequestType.post,
     ).getData();
     return response;
   }

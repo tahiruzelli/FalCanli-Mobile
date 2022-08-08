@@ -1,25 +1,34 @@
 import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
+import 'package:falcanli/Globals/Utils/strings.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
-import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
+import 'package:falcanli/Models/fortuner.dart';
 import 'package:falcanli/View/UserViews/FortunersView/comments_view.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FortunerDetailView extends StatelessWidget {
-  late int index;
   late UserFortunerController fortunerController;
-  FortunerDetailView(this.index, this.fortunerController);
+  FortunerDetailView(this.fortunerController);
   @override
   Widget build(BuildContext context) {
+    int avaibleStatus = fortunerController.currentFortuner!.fortuneTellerStatus
+                .toString() ==
+            "müsait"
+        ? 0
+        : fortunerController.currentFortuner!.fortuneTellerStatus.toString() ==
+                "görüşmede"
+            ? 1
+            : 2;
     return Scaffold(
-      appBar: customAppBar(title: "Ayşa Fatma"),
+      appBar: customAppBar(
+          title: fortunerController.currentFortuner?.nickname ?? "Falcı"),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () =>
-            fortunerController.onGoLiveWithFortunerButtonPressed(index % 3),
+            fortunerController.onGoLiveWithFortunerButtonPressed(avaibleStatus),
         label: const Text("Falcı ile görüş!"),
         backgroundColor: mainColor,
       ),
@@ -52,7 +61,7 @@ class FortunerDetailView extends StatelessWidget {
                         height: Get.height * 0.2,
                         width: Get.width * 0.15,
                         child: Image.asset(
-                          "assets/images/${index % 3 == 0 ? "trafficRed" : index % 3 == 1 ? "trafficYellow" : "trafficGreen"}.png",
+                          "assets/images/${avaibleStatus == 0 ? "trafficGreen" : avaibleStatus == 1 ? "trafficYellow" : "trafficRed"}.png",
                           fit: BoxFit.cover,
                           height: Get.height * 0.2,
                           width: Get.width * 0.15,
@@ -63,8 +72,12 @@ class FortunerDetailView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              DetailLine("İsim", "Ayşe Fatma"),
-              DetailLine("Uzmanlık", "Tarot, kahve"),
+              DetailLine("İsim",
+                  fortunerController.currentFortuner?.nickname ?? "Falcı"),
+              DetailLine(
+                "Uzmanlık",
+                proffesionToString(fortunerController.currentFortuner!),
+              ),
               pointLine(),
               DetailLine("Yaş", "35"),
               DetailLine("Puan", "8.2/10"),
@@ -75,7 +88,7 @@ class FortunerDetailView extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet ",
+                      fortunerController.currentFortuner?.about ?? "",
                       style: TextStyle(
                         fontSize: MediaQuery.of(context).size.height * 0.02,
                         color: Colors.black,
@@ -163,4 +176,21 @@ class FortunerDetailView extends StatelessWidget {
       ),
     );
   }
+}
+
+String proffesionToString(Fortuner fortuner) {
+  String proffesionString = "";
+  if (fortuner.hasCoffee ?? false) {
+    proffesionString += "Kahve, ";
+  }
+  if (fortuner.hasTarot ?? false) {
+    proffesionString += "Tarot, ";
+  }
+  if (fortuner.hasBirthChart ?? false) {
+    proffesionString += "Doğum Haritası, ";
+  }
+  if (fortuner.hasAstrology ?? false) {
+    proffesionString += "Astroloji, ";
+  }
+  return dropLastCharacter(dropLastCharacter(proffesionString));
 }

@@ -1,3 +1,4 @@
+import 'package:falcanli/Controllers/UserControllers/RegisterController/user_register_controller.dart';
 import 'package:falcanli/Controllers/UserControllers/UserProfileController/user_profile_controller.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CompleteProfileView extends StatelessWidget {
-  UserProfileController profileController = Get.put(UserProfileController());
+  UserRegisterController userProfileController = Get.put(UserRegisterController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +26,7 @@ class CompleteProfileView extends StatelessWidget {
           MarialStatusPicker(),
           SexPicker(),
           ReloationshipPicker(),
-          JobPicker(profileController.jobList),
+          JobPicker(),
         ],
       ),
     );

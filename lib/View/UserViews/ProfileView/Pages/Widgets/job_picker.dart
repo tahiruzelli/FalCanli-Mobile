@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class JobPicker extends StatefulWidget {
-  late List<Job> jobs;
-  JobPicker(this.jobs);
   @override
   State<StatefulWidget> createState() => _AutoCompletTF();
 }
@@ -24,7 +22,7 @@ class _AutoCompletTF extends State<JobPicker> {
             Card(
               child: Autocomplete<Job>(
                 optionsBuilder: (TextEditingValue textEditingValue) {
-                  return widget.jobs
+                  return profileController.jobList
                       .where((Job county) => county.name!
                           .toLowerCase()
                           .startsWith(textEditingValue.text.toLowerCase()))

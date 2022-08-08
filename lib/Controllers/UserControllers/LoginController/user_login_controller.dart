@@ -9,6 +9,7 @@ import 'package:falcanli/View/UserViews/RegisterView/user_register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 class UserLoginController extends GetxController {
   LoginRepository loginRepository = LoginRepository();
@@ -44,8 +45,10 @@ class UserLoginController extends GetxController {
         if (isHttpOK(value['statusCode'])) {
           Get.offAll(UserMainView());
           jwtToken = value['result'];
+          Map<String, dynamic> payload = Jwt.parseJwt(jwtToken ?? "");
+          GetStorage().write(userIdKey,payload['userid']);
           GetStorage().write(jwtTokenKey, jwtToken);
-          GetStorage().write(isUserKey, true);
+          GetStorage().write(isUserKey, !payload['isFortuneTeller']);
         } else {
           warningSnackBar(value['message']);
         }

@@ -1,21 +1,15 @@
 import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
+import 'package:falcanli/Globals/Constans/enums.dart';
+import 'package:falcanli/Models/fortuner.dart';
 import 'package:falcanli/View/UserViews/FortunersView/Widgets/proffesion_line.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
 class FortunerCard extends StatelessWidget {
-  late int index;
-  late bool kahve;
-  late bool astroloji;
-  late bool dogumHaritasi;
-  late bool tarot;
+  late Fortuner fortuner;
   FortunerCard({
-    required this.index,
-    required this.tarot,
-    required this.kahve,
-    required this.dogumHaritasi,
-    required this.astroloji,
+    required this.fortuner,
   });
   UserFortunerController fortunerController = Get.find();
   @override
@@ -25,12 +19,12 @@ class FortunerCard extends StatelessWidget {
       child: Card(
         child: ListTile(
           onTap: () => fortunerController.onFortunerCardPressed(
-              index, fortunerController),
+              fortunerController, fortuner),
           leading: const CircleAvatar(
             backgroundImage: NetworkImage(
                 "https://www.turuncufalcafe.com/fal-fotograflar/2019/03/falcihelen.jpg"),
           ),
-          title: const Text("Ayse Fatma"),
+          title: Text(fortuner.nickname ?? ""),
           subtitle: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,51 +42,54 @@ class FortunerCard extends StatelessWidget {
                 // justShow: true,
                 // followChange: true,
               ),
-              const SizedBox(height: 5),
-              ProffessionLine(
-                tarot: tarot,
-                kahve: kahve,
-                dogumHaritasi: dogumHaritasi,
-                astroloji: astroloji,
-              ),
+              // const SizedBox(height: 5),
+              // ProffessionLine(
+              //   tarot: tarot,
+              //   kahve: kahve,
+              //   dogumHaritasi: dogumHaritasi,
+              //   astroloji: astroloji,
+              // ),
             ],
           ),
           trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(
-                width: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text("127"),
-                    Image.asset(
-                      "assets/icons/coinIcon.png",
-                      height: 20,
-                      width: 20,
-                      fit: BoxFit.fill,
-                    ),
-                  ],
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                SizedBox(
+                  width: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        fortunerController.fortuneType == FortuneType.coffee
+                            ? fortuner.coffeeServiceFee.toString()
+                            : fortunerController.fortuneType ==
+                                    FortuneType.astrology
+                                ? fortuner.astrologyServiceFee.toString()
+                                : fortunerController.fortuneType ==
+                                        FortuneType.natalChart
+                                    ? fortuner.birthChartServiceFee.toString()
+                                    : fortuner.tarotServiceFee.toString(),
+                      ),
+                      Image.asset(
+                        "assets/icons/coinIcon.png",
+                        height: 20,
+                        width: 20,
+                        fit: BoxFit.fill,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              index % 3 == 2
-                  ? const Text(
-                      "Müsait",
-                      style: TextStyle(color: Colors.green),
-                    )
-                  : index % 3 == 1
-                      ? const Text(
-                          "Görüşmede",
-                          style: TextStyle(color: Colors.orange),
-                        )
-                      : const Text(
-                          "Müsait Değil",
-                          style: TextStyle(color: Colors.red),
-                        )
-            ],
-          ),
+                Text(
+                  fortuner.fortuneTellerStatus ?? "",
+                  style: TextStyle(
+                    color: fortuner.fortuneTellerStatus.toString() == "müsait"
+                        ? Colors.green
+                        : Colors.red,
+                  ),
+                ),
+              ]),
         ),
       ),
     );

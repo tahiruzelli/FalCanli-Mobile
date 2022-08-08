@@ -33,7 +33,10 @@ class FortunerLoginView extends StatelessWidget {
                         "E-Mail", fortunerLoginController.emailController),
                     const SizedBox(height: 20),
                     CustomTextField(
-                        "Şifre", fortunerLoginController.passwordController),
+                      "Şifre",
+                      fortunerLoginController.passwordController,
+                      obscureText: true,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -73,7 +76,7 @@ class FortunerLoginView extends StatelessWidget {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {},
+        onPressed: () => fortunerLoginController.onFortunerLoginButtonPressed(),
         padding: const EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),

@@ -8,19 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'end_video_call.dart';
-
 const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
 const token =
     "0064bc8ddcf1ed7459d8482cbfa369dfe88IAB35fGbEpsaeliZJs2X/ehpjPTeIXxXj6XnPhlNxUw3uP1ojLoAAAAAEADLkLYogr7JYgEAAQCBvsli";
-const channel = "falcıbacı123";
+const channel = "tahirtest";
 
-class UserVideoCallView extends StatefulWidget {
+class FortunerVideoCallView extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<UserVideoCallView> {
+class _MyAppState extends State<FortunerVideoCallView> {
   int? _remoteUid;
   bool _localUserJoined = false;
   late RtcEngine _engine;
@@ -76,7 +74,7 @@ class _MyAppState extends State<UserVideoCallView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ayşe Fatma'),
+        title: const Text('Tahir Uzelli'),
       ),
       body: Stack(
         children: [
@@ -232,7 +230,7 @@ class _MyAppState extends State<UserVideoCallView> {
 
   void _onCallEnd(BuildContext context) {
     _engine.leaveChannel();
-    Get.offAll(EndVideoCall());
+    Get.back();
   }
 
   void _onToggleMute() {

@@ -1,3 +1,4 @@
+import 'package:falcanli/Globals/Utils/date_time.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:flutter/material.dart';
@@ -22,22 +23,44 @@ class CommentsView extends StatelessWidget {
               width: Get.width,
               child: fortunerController.commentsLoading.value
                   ? LoadingIndicator()
-                  : ListView.builder(
-                      itemCount: 10,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Card(
-                            child: ListTile(
-                              title: Text(
-                                  "Cok iyi bi falci butun her seyi bildi aldigi parayi hak ediyor fazlasini bile"),
-                              trailing: Text("21/07/22\n13.43"),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                  : fortunerController.comments.isEmpty
+                      ? const Center(
+                          child: Text("Bu falcı için henüz yorum yapılmamış"),
+                        )
+                      : ListView.builder(
+                          itemCount: fortunerController.comments.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(fortunerController
+                                          .comments[index].userid ??
+                                      ""),
+                                  subtitle: Text(
+                                    fortunerController
+                                            .comments[index].comment ??
+                                        "",
+                                  ),
+                                  trailing: Text(
+                                    (fortunerController
+                                                .comments[index].sCreatedate
+                                                ?.split(" ")[0] ??
+                                            "") +
+                                        "\n" +
+                                        (fortunerController
+                                                .comments[index].sCreatedate
+                                                ?.split(" ")[1] ??
+                                            ""),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
             ),
           ),
         ],

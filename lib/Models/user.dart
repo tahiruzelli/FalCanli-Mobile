@@ -13,6 +13,7 @@ class User {
   String? sCreatedate;
   String? sUpdatedate;
   int? iV;
+  String? zodiac;
 
   User(
       {this.sCreateuser,
@@ -28,7 +29,9 @@ class User {
       this.sId,
       this.sCreatedate,
       this.sUpdatedate,
-      this.iV});
+      this.iV,
+      this.zodiac,
+      });
 
   User.fromJson(Map<String, dynamic> json) {
     sCreateuser = json['_createuser'];
@@ -45,6 +48,7 @@ class User {
     sCreatedate = json['_createdate'];
     sUpdatedate = json['_updatedate'];
     iV = json['__v'];
+    zodiac = json["zodiacSign"];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +67,7 @@ class User {
     data['_createdate'] = sCreatedate;
     data['_updatedate'] = sUpdatedate;
     data['__v'] = iV;
+    data['zodiacSign'] = zodiac;
     return data;
   }
 }
