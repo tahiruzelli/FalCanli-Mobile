@@ -8,22 +8,27 @@ class BirthDayPicker extends StatelessWidget {
   UserRegisterController registerController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        color: Colors.white,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: Get.width * 0.04),
+          const Padding(
+            padding: EdgeInsets.only(left: 10),
             child: Text(
               "Doğum Günü",
               style: TextStyle(
-                fontSize: Get.height * 0.02,
-                color: Colors.black,
+                fontSize: 12,
+                color: colorTextGrey,
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(right: Get.width * 0.04),
+            padding:
+                EdgeInsets.only(right: Get.width * 0.04, top: 2, bottom: 2),
             child: Obx(
               () => ElevatedButton(
                 onPressed: () async {
@@ -46,7 +51,7 @@ class BirthDayPicker extends StatelessWidget {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(iosGreyColor),
                   padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(vertical: 15)),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 5)),
                 ),
                 child: registerController.shouldReload.value
                     ? Text(

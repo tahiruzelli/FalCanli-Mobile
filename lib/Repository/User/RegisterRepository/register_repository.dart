@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import '../../../Globals/Constans/urls.dart';
 import '../../htttp_service.dart';
@@ -11,18 +12,21 @@ abstract class IRegisterRepository {
     required String email,
     required String birthday,
     required String gender,
+    required File file,
   });
 }
 
 class RegisterRepository implements IRegisterRepository {
   @override
-  Future register(
-      {required String name,
-      required String lastName,
-      required String password,
-      required String email,
-      required String birthday,
-      required String gender}) async {
+  Future register({
+    required String name,
+    required String lastName,
+    required String password,
+    required String email,
+    required String birthday,
+    required String gender,
+    required File file,
+  }) async {
     Map body = {
       "name": name,
       "lastname": lastName,
@@ -30,13 +34,14 @@ class RegisterRepository implements IRegisterRepository {
       "email": email,
       "birthday": birthday,
       "gender": gender,
+      "file": file,
     };
     var jsonBody = const JsonEncoder().convert(body);
     var response = await RestConnector(
       baseUrl + userUrl,
       "",
       data: jsonBody,
-      requestType: RequestType.post,
+      requestType: RequestType.media,
     ).getData();
     return response;
   }

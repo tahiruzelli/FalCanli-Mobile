@@ -58,7 +58,6 @@ class RestConnector {
       Dio dio = Dio();
       dio.options.headers["authorization"] = token;
       dio.options.headers['content-Type'] = 'multipart/form-data';
-      dio.options.headers['talepid'] = talepId;
       response = await dio.post(
         url,
         data: data,

@@ -1,7 +1,9 @@
 import 'package:falcanli/Controllers/UserControllers/RegisterController/user_register_controller.dart';
+import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Widgets/big_button.dart';
 import 'package:falcanli/Globals/Widgets/custom_textfield.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
+import 'package:falcanli/View/GlobalViews/pdf_view.dart';
 import 'package:falcanli/View/UserViews/ProfileView/Pages/Widgets/sex_picker.dart';
 import 'package:falcanli/View/UserViews/RegisterView/Widgets/birt_date_picker.dart';
 import 'package:falcanli/View/UserViews/RegisterView/Widgets/birth_time_picker.dart';
@@ -21,8 +23,7 @@ class UserRegisterView extends StatelessWidget {
           GradiendContainer(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: ListView(
               children: [
                 const Center(
                   child: Text(
@@ -30,54 +31,130 @@ class UserRegisterView extends StatelessWidget {
                     style: bigTitleStyle,
                   ),
                 ),
-                Column(
+                const SizedBox(height: 20),
+                CustomTextField(
+                    "Tam isim", userRegisterController.nameController),
+                const SizedBox(height: 20),
+                CustomTextField(
+                    "E-mail Adresiniz", userRegisterController.emailController),
+                const SizedBox(height: 20),
+                CustomTextField(
+                  "Şifreniz",
+                  userRegisterController.passwordController,
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                BirthDayPicker(),
+                Row(
                   children: [
-                    CustomTextField(
-                        "Tam isim", userRegisterController.nameController),
-                    const SizedBox(height: 20),
-                    CustomTextField("E-mail Adresiniz",
-                        userRegisterController.emailController),
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      "Şifreniz",
-                      userRegisterController.passwordController,
-                      obscureText: true,
+                    Obx(
+                      () => Checkbox(
+                        value: userRegisterController.birtTimeOpen.value,
+                        onChanged: (bool? value) {
+                          userRegisterController.birtTimeOpen.value =
+                              value ?? false;
+                        },
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    BirthDayPicker(),
-                    Row(
-                      children: [
-                        Obx(
-                          () => Checkbox(
-                            value: userRegisterController.birtTimeOpen.value,
-                            onChanged: (bool? value) {
-                              userRegisterController.birtTimeOpen.value =
-                                  value ?? false;
-                            },
+                    const Text("Doğum saatimi bilmiyorum"),
+                  ],
+                ),
+                Obx(
+                  () => userRegisterController.birtTimeOpen.value
+                      ? Container()
+                      : BirthTimePicker(),
+                ),
+                SexPicker(),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () => userRegisterController.getImage(),
+                      child: Container(
+                          height: Get.height / 5,
+                          decoration: BoxDecoration(
+                            color: iosGreyColor,
+                            borderRadius: BorderRadius.circular(16),
                           ),
+                          child: Obx(
+                            () => userRegisterController.isImageSelected.value
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.file(
+                                      userRegisterController.image!,
+                                      height: Get.height / 5,
+                                    ),
+                                  )
+                                : const Center(
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text("Fotoğraf seçiniz"),
+                                    ),
+                                  ),
+                          )),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Obx(
+                              () => Checkbox(
+                                value: userRegisterController.readKK.value,
+                                onChanged: (bool? value) {
+                                  userRegisterController.readKK.value =
+                                      value ?? false;
+                                },
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Get.to(PdfView(
+                                title: "Kullanım Koşulları",
+                                path: "assets/pdfs/kk.pdf",
+                              )),
+                              child: const Text(
+                                "Kullanım koşullarını okudum",
+                                style: TextStyle(color: colorTextGrey),
+                              ),
+                            )
+                          ],
                         ),
-                        const Text("Doğum saatimi bilmiyorum"),
+                        Row(
+                          children: [
+                            Obx(
+                              () => Checkbox(
+                                value: userRegisterController.readKVKK.value,
+                                onChanged: (bool? value) {
+                                  userRegisterController.readKVKK.value =
+                                      value ?? false;
+                                },
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Get.to(PdfView(
+                                path: "assets/pdfs/kvkk.pdf",
+                                title: "KVKK",
+                              )),
+                              child: const Text(
+                                "KVKK'nu kabul ediyorum.",
+                                style: TextStyle(color: colorTextGrey),
+                              ),
+                            )
+                          ],
+                        ),
                       ],
-                    ),
-                    Obx(
-                      () => userRegisterController.birtTimeOpen.value
-                          ? Container()
-                          : BirthTimePicker(),
-                    ),
-                    SexPicker(),
-                    const SizedBox(height: 30),
-                    Obx(
-                      () => BigButton(
-                          userRegisterController.registerLoading.value
-                              ? "Yükleniyor..."
-                              : "Üye Ol", () {
-                        userRegisterController.onRegisterButtonPressed();
-                      }),
                     )
                   ],
                 ),
-                Container(),
-                Container(),
+                Obx(
+                  () => BigButton(
+                      userRegisterController.registerLoading.value
+                          ? "Yükleniyor..."
+                          : "Üye Ol", () {
+                    userRegisterController.onRegisterButtonPressed();
+                  }),
+                ),
               ],
             ),
           )
