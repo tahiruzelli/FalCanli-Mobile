@@ -135,14 +135,14 @@ class FortunerLiveController extends GetxController {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 25.0),
                     width: Get.width / 3,
-                    child: RaisedButton(
-                      elevation: 5.0,
-                      onPressed: () => declineMeet(),
-                      padding: const EdgeInsets.all(15.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(vertical: 15)),
                       ),
-                      color: Colors.white,
+                      onPressed: () => declineMeet(),
                       child: const Text(
                         "Reddet",
                         style: TextStyle(
@@ -158,14 +158,14 @@ class FortunerLiveController extends GetxController {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 25.0),
                     width: Get.width / 3,
-                    child: RaisedButton(
-                      elevation: 5.0,
-                      onPressed: () => acceptMeet(),
-                      padding: const EdgeInsets.all(15.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(vertical: 15)),
                       ),
-                      color: Colors.white,
+                      onPressed: () => acceptMeet(),
                       child: const Text(
                         "Kabul Et",
                         style: TextStyle(
@@ -191,6 +191,7 @@ class FortunerLiveController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    openSocket();
     isFortunerOnline.value = false;
   }
 }

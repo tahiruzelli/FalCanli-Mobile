@@ -35,6 +35,7 @@ class FortunerListView extends StatelessWidget {
                                 return FortunerCard(
                                   fortuner:
                                       fortunerController.fortunerList[index],
+                                  fortunerController: fortunerController,
                                 );
                               },
                             ),

@@ -20,8 +20,10 @@ class UserProfileController extends GetxController {
   RxString relationshipStatus = "Evli".obs;
 
   RxInt selectedJobId = 0.obs;
+  RxInt remainingCredit = 0.obs;
 
   RxBool isProfileDatasLoading = false.obs;
+  RxBool isRemainingCreditLoading = false.obs;
 
   Job? selectedJob;
   User? user;
@@ -44,10 +46,11 @@ class UserProfileController extends GetxController {
       profileRepository.getProfileDatas(userId).then((value) {
         if (isHttpOK(value['statusCode'])) {
           user = User.fromJson(value['result']);
+          isProfileDatasLoading.value = false;
         } else {
           warningSnackBar(value['message']);
+          isProfileDatasLoading.value = false;
         }
-        isProfileDatasLoading.value = false;
       });
     }
   }
@@ -58,14 +61,14 @@ class UserProfileController extends GetxController {
       onLogoutButtonPressed();
       errorSnackBar("Bir hata oluştu, otomatik çıkış yapılıyor.");
     } else {
-      isProfileDatasLoading.value = true;
+      isRemainingCreditLoading.value = true;
       profileRepository.getUserCredit(userId).then((value) {
         if (isHttpOK(value['statusCode'])) {
-          user = User.fromJson(value['result']);
+          remainingCredit.value = value['result']['remainingCredit'];
         } else {
           warningSnackBar(value['message']);
         }
-        isProfileDatasLoading.value = false;
+        isRemainingCreditLoading.value = false;
       });
     }
   }

@@ -28,13 +28,12 @@ class BirthDayPicker extends StatelessWidget {
               () => ElevatedButton(
                 onPressed: () async {
                   DateTime? picked = await showDatePicker(
-                    helpText: "Başlangıç Tarihi Seçiniz",
-                    locale: const Locale("tr", "TR"),
-                    context: context,
-                    firstDate: DateTime(1970),
-                    initialDate: DateTime(1971),
-                    lastDate: DateTime(2010)
-                  );
+                      helpText: "Başlangıç Tarihi Seçiniz",
+                      locale: const Locale("tr", "TR"),
+                      context: context,
+                      firstDate: DateTime(1970),
+                      initialDate: DateTime(1971),
+                      lastDate: DateTime(2010));
                   if (picked != null) {
                     registerController.birthDate = picked;
 
@@ -46,6 +45,8 @@ class BirthDayPicker extends StatelessWidget {
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(iosGreyColor),
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 15)),
                 ),
                 child: registerController.shouldReload.value
                     ? Text(

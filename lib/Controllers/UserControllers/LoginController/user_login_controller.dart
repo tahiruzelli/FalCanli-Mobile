@@ -4,6 +4,7 @@ import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
 import 'package:falcanli/Globals/global_vars.dart';
 import 'package:falcanli/Repository/User/LoginRepository/login_repository.dart';
 import 'package:falcanli/View/FortunerViews/LoginView/fortuner_login_view.dart';
+import 'package:falcanli/View/FortunerViews/MainView/fortuner_main_view.dart';
 import 'package:falcanli/View/UserViews/MainView/user_main_view.dart';
 import 'package:falcanli/View/UserViews/RegisterView/user_register_view.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,8 @@ class UserLoginController extends GetxController {
   void onLoginButtonPressed() {
     if (!GetUtils.isEmail(emailController.text)) {
       warningSnackBar("E mail formatınız hatalı");
-    } else if (passwordController.text.length < 8) {
-      warningSnackBar("Şifreniz 8 karakterden küçük olamaz");
+    } else if (passwordController.text.length < 7) {
+      warningSnackBar("Şifreniz 7 karakterden küçük olamaz");
     } else {
       isLoginLoading.value = true;
       loginRepository
@@ -43,12 +44,16 @@ class UserLoginController extends GetxController {
           .then((value) {
         isLoginLoading.value = false;
         if (isHttpOK(value['statusCode'])) {
-          Get.offAll(UserMainView());
           jwtToken = value['result'];
           Map<String, dynamic> payload = Jwt.parseJwt(jwtToken ?? "");
-          GetStorage().write(userIdKey,payload['userid']);
+          GetStorage().write(userIdKey, payload['userid']);
           GetStorage().write(jwtTokenKey, jwtToken);
-          GetStorage().write(isUserKey, !payload['isFortuneTeller']);
+          GetStorage().write(isUserKey, payload['isFortuneTeller']);
+          if (payload["isFortuneTeller"]) {
+            Get.offAll(FortunerMainView());
+          } else {
+            Get.offAll(UserMainView());
+          }
         } else {
           warningSnackBar(value['message']);
         }

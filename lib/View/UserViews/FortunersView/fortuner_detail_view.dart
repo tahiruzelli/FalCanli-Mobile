@@ -79,8 +79,7 @@ class FortunerDetailView extends StatelessWidget {
                 proffesionToString(fortunerController.currentFortuner!),
               ),
               pointLine(),
-              DetailLine("Yaş", "35"),
-              DetailLine("Puan", "8.2/10"),
+              DetailLine("Yaş", fortunerController.currentFortuner!.age.toString()),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
@@ -159,14 +158,12 @@ class FortunerDetailView extends StatelessWidget {
                     normalStar: Image.asset("assets/icons/unselectedStar.png"),
                     selectedStar: Image.asset("assets/icons/selectedStar.png"),
                     step: 0.01,
-                    defaultStars: 4.3,
+                    defaultStars:
+                        fortunerController.currentFortuner!.averagePoint ?? 0.0,
                     justShow: true,
-                    // starCount: 5,
                     starHeight: 20,
                     starWidth: 20,
                     starMargin: 3,
-                    // justShow: true,
-                    // followChange: true,
                   ),
                 ),
               ),

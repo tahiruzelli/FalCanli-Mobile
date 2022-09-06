@@ -35,6 +35,8 @@ class BirthTimePicker extends StatelessWidget {
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(iosGreyColor),
+                  padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(vertical: 15)),
                 ),
                 child: registerController.shouldReload.value
                     ? Text(

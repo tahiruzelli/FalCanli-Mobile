@@ -33,7 +33,7 @@ class RestConnector {
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
-          'Authorization': token,
+          'Authorization': "Bearer " + token,
         },
       );
     } else if (requestType == RequestType.post) {
@@ -42,7 +42,7 @@ class RestConnector {
         body: data,
         headers: {
           'content-type': 'application/json',
-          'Authorization': token,
+          'Authorization': "Bearer " + token,
         },
       );
     } else if (requestType == RequestType.put) {
@@ -51,7 +51,7 @@ class RestConnector {
         body: data,
         headers: {
           'content-type': 'application/json',
-          'Authorization': token,
+          'Authorization': "Bearer " + token,
         },
       );
     } else if (requestType == RequestType.media) {
@@ -68,7 +68,7 @@ class RestConnector {
         Uri.parse(url),
         headers: {
           'content-type': 'application/json',
-          'Authorization': token,
+          'Authorization': "Bearer " + token,
         },
       );
     }

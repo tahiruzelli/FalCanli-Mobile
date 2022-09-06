@@ -20,6 +20,8 @@ class Fortuner {
   String? sCreatedate;
   String? sUpdatedate;
   int? iV;
+  double? averagePoint;
+  int? age;
 
   Fortuner(
       {this.sId,
@@ -42,7 +44,9 @@ class Fortuner {
       this.astrologyServiceFee,
       this.sCreatedate,
       this.sUpdatedate,
-      this.iV});
+      this.iV,
+      this.averagePoint,
+      this.age});
 
   Fortuner.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -66,6 +70,8 @@ class Fortuner {
     sCreatedate = json['_createdate'];
     sUpdatedate = json['_updatedate'];
     iV = json['__v'];
+    averagePoint = json['averagePoint']?.toDouble() ?? 0.0;
+    age = json['age'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,6 +97,8 @@ class Fortuner {
     data['_createdate'] = sCreatedate;
     data['_updatedate'] = sUpdatedate;
     data['__v'] = iV;
+    data['averagePoint'] = averagePoint?.toDouble() ?? 0;
+    data['age'] = age;
     return data;
   }
 }

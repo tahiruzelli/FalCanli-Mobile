@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 
 String formatDateTime(DateTime date) {
+  print(date.toString());
   var outputFormat = DateFormat('dd/MM/yyyy hh:mm a');
   var outputDate = outputFormat.format(date);
 

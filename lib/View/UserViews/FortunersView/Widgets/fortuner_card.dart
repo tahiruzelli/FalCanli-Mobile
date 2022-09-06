@@ -1,17 +1,16 @@
 import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import 'package:falcanli/Globals/Constans/enums.dart';
 import 'package:falcanli/Models/fortuner.dart';
-import 'package:falcanli/View/UserViews/FortunersView/Widgets/proffesion_line.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 
 class FortunerCard extends StatelessWidget {
-  late Fortuner fortuner;
+  final Fortuner fortuner;
+  final UserFortunerController fortunerController;
   FortunerCard({
     required this.fortuner,
+    required this.fortunerController,
   });
-  UserFortunerController fortunerController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,22 +32,12 @@ class FortunerCard extends StatelessWidget {
                 normalStar: Image.asset("assets/icons/unselectedStar.png"),
                 selectedStar: Image.asset("assets/icons/selectedStar.png"),
                 step: 0.01,
-                defaultStars: 4.3,
+                defaultStars: fortuner.averagePoint ?? 1,
                 justShow: true,
-                // starCount: 5,
                 starHeight: 20,
                 starWidth: 20,
                 starMargin: 3,
-                // justShow: true,
-                // followChange: true,
               ),
-              // const SizedBox(height: 5),
-              // ProffessionLine(
-              //   tarot: tarot,
-              //   kahve: kahve,
-              //   dogumHaritasi: dogumHaritasi,
-              //   astroloji: astroloji,
-              // ),
             ],
           ),
           trailing: Column(

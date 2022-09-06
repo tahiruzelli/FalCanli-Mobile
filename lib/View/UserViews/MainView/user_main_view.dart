@@ -1,6 +1,9 @@
+import 'package:falcanli/Controllers/UserControllers/UserProfileController/user_profile_controller.dart';
 import 'package:falcanli/Controllers/UserControllers/user_main_controller.dart';
 import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
+import 'package:falcanli/Repository/User/ProfileRepository/user_profile_repository.dart';
+import 'package:falcanli/View/GlobalViews/pdf_view.dart';
 import 'package:falcanli/View/UserViews/LoginView/user_login_view.dart';
 import 'package:falcanli/View/UserViews/ProfileView/Pages/complete_profile_view.dart';
 import 'package:falcanli/View/UserViews/StaticPages/faq_view.dart';
@@ -8,14 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import '../../../Globals/Constans/colors.dart';
 import '../../../Globals/Constans/storage_keys.dart';
 
 class UserMainView extends StatelessWidget {
   final _advancedDrawerController = AdvancedDrawerController();
   UserMainController userMainController = Get.put(UserMainController());
-  UserFortunerController fortunerController = Get.put(UserFortunerController());
+  UserProfileController userProfileController = Get.put(UserProfileController());
   Color getIconColor(int index) {
     return userMainController.currentPageIndex.value != index
         ? mainColor
@@ -24,6 +26,7 @@ class UserMainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    userProfileController.getUserDatas();
     return AdvancedDrawer(
       backdropColor: mainColor,
       controller: _advancedDrawerController,
@@ -61,14 +64,14 @@ class UserMainView extends StatelessWidget {
                 title: const Text("S.S.S."),
               ),
               ListTile(
-                onTap: () {},
+                onTap: ()=>Get.to(PdfView(path: "assets/pdfs/kk.pdf",title: "Kullanım Koşulları",)),
                 leading: const Icon(Icons.rule),
-                title: const Text("Kurallar"),
+                title: const Text("Kullanım Koşulları"),
               ),
               ListTile(
-                onTap: () {},
+                onTap: ()=> Get.to(PdfView(path: "assets/pdfs/kvkk.pdf",title: "KVKK",)),
                 leading: const Icon(Icons.rule),
-                title: const Text("bla bla"),
+                title: const Text("KVKK"),
               ),
               const Spacer(),
               ListTile(

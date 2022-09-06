@@ -17,7 +17,7 @@ class MainController extends GetxController {
       bool? isUser = GetStorage().read(isUserKey);
       if (isUser == null) {
         //TODO auth error
-      } else if (isUser) {
+      } else if (!isUser) {
         Get.offAll(UserMainView());
       } else {
         Get.offAll(FortunerMainView());

@@ -12,7 +12,6 @@ class UserProfileView extends StatelessWidget {
   UserProfileController profileController = Get.put(UserProfileController());
   @override
   Widget build(BuildContext context) {
-    profileController.getUserDatas();
     profileController.getUserCredit();
     return Scaffold(
       body: Stack(
@@ -33,23 +32,31 @@ class UserProfileView extends StatelessWidget {
                       ),
                       const SizedBox(height: 30),
                       DetailLine("Adi", profileController.user?.name ?? ""),
-                      DetailLine("Dogum Tarihi", formatDateTime(DateTime.parse(profileController.user?.birthday ?? ""))),
+                      DetailLine(
+                          "Dogum Tarihi",
+                          formatDateTime(DateTime.parse(
+                              profileController.user?.birthday ?? ""))),
                       DetailLine("Burç", profileController.user?.zodiac ?? ""),
-                      DetailLine("Kredi Miktarı", "2567"),
+                      profileController.isRemainingCreditLoading.value
+                          ? LoadingIndicator()
+                          : DetailLine(
+                              "Kredi Miktarı",
+                              profileController.remainingCredit.value
+                                  .toString()),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 25.0),
                           width: double.infinity,
-                          child: RaisedButton(
-                            elevation: 5.0,
+                          child: ElevatedButton(
                             onPressed: () =>
                                 profileController.onLogoutButtonPressed(),
-                            padding: const EdgeInsets.all(15.0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.symmetric(vertical: 15)),
                             ),
-                            color: Colors.white,
                             child: const Text(
                               "Çıkış Yap",
                               style: TextStyle(

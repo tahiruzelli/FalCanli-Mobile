@@ -20,8 +20,8 @@ class FilterSelectArea extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
-                filterArea(0, "Tarot"),
-                filterArea(1, "Kahve"),
+                filterArea(0, "Kahve"),
+                filterArea(1, "Tarot"),
               ],
             ),
           ),
@@ -54,7 +54,8 @@ class FilterSelectArea extends StatelessWidget {
             } else if (index == 3) {
               fortunerController.fortuneType = FortuneType.natalChart;
             } else {
-              errorSnackBar("Bir hata alındı. Sistem bu hatayı otomatik olarak raporladı.");
+              errorSnackBar(
+                  "Bir hata alındı. Sistem bu hatayı otomatik olarak raporladı.");
             }
 
             fortunerController.filterIndex.value = index;
