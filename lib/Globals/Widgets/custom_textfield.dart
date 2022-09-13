@@ -30,8 +30,8 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         keyboardType: textInputType,
         style: const TextStyle(
-          color: mainColor,
-          fontSize: 12,
+          color: Colors.black,
+          fontSize: 15,
         ),
         cursorColor: mainColor,
         decoration: InputDecoration(

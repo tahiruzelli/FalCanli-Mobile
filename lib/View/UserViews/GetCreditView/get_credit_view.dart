@@ -1,5 +1,6 @@
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Widgets/big_button.dart';
+import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/View/UserViews/GetCreditView/Widgets/intro_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -15,20 +16,25 @@ class _VipMebershipState extends State<GetCreditView> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        body: ListView(
+        body: Stack(
           children: [
-            IntroSlider(),
-            Row(
+            GradiendContainer(),
+            Column(
               children: [
-                membershipType(0, size, ["500", "59,90₺"]),
-                membershipType(1, size, ["2500", "69,99₺"]),
-                membershipType(2, size, ["5000", "104,99₺"]),
-                membershipType(3, size, ["10000", "149,99 ₺"]),
+                IntroSlider(),
+                Row(
+                  children: [
+                    membershipType(0, size, ["500", "59,90₺"]),
+                    membershipType(1, size, ["2500", "69,99₺"]),
+                    membershipType(2, size, ["5000", "104,99₺"]),
+                    membershipType(3, size, ["10000", "149,99 ₺"]),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: BigButton("Kredi Al", () {}),
+                ),
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: BigButton("Kredi Al", () {}),
             ),
           ],
         ),

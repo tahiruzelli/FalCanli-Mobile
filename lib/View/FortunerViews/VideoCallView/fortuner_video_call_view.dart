@@ -2,23 +2,25 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:falcanli/Controllers/FortunerControllers/FortunerLiveController/fortuner_live_controller.dart';
 import 'package:falcanli/Controllers/UserControllers/LiveVideoController/live_video_controller.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
-const token =
-    "0064bc8ddcf1ed7459d8482cbfa369dfe88IAB35fGbEpsaeliZJs2X/ehpjPTeIXxXj6XnPhlNxUw3uP1ojLoAAAAAEADLkLYogr7JYgEAAQCBvsli";
-const channel = "tahirtest";
-
 class FortunerVideoCallView extends StatefulWidget {
+  final String token;
+  final String channelId;
+  FortunerVideoCallView({required this.channelId, required this.token});
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<FortunerVideoCallView> {
+  String appId = "7bb9540794144db0ba682682b4030191";
+  late String token;
+  late String channel;
   int? _remoteUid;
   bool _localUserJoined = false;
   late RtcEngine _engine;
@@ -29,11 +31,13 @@ class _MyAppState extends State<FortunerVideoCallView> {
     "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
     "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
   ];
-  LiveVideoController liveVideoController = Get.put(LiveVideoController());
+  FortunerLiveController liveVideoController = Get.find();
   @override
   void initState() {
     super.initState();
     initAgora();
+    token = widget.token;
+    channel = widget.channelId;
   }
 
   Future<void> initAgora() async {
@@ -230,6 +234,7 @@ class _MyAppState extends State<FortunerVideoCallView> {
 
   void _onCallEnd(BuildContext context) {
     _engine.leaveChannel();
+    // liveVideoController.meetSocket.close();
     Get.back();
   }
 

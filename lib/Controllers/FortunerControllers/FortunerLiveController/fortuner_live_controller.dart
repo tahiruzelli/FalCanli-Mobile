@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Constans/storage_keys.dart';
@@ -6,16 +8,22 @@ import 'package:falcanli/Globals/Utils/booleans.dart';
 import 'package:falcanli/Globals/Utils/exit_app.dart';
 import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
+import 'package:falcanli/Models/conversation.dart';
 import 'package:falcanli/Repository/Fortuner/MainRepository/main_repository.dart';
 import 'package:falcanli/View/FortunerViews/VideoCallView/fortuner_video_call_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class FortunerLiveController extends GetxController {
   FortunerMainRepository mainRepository = FortunerMainRepository();
 
   RxBool isFortunerOnline = false.obs;
+  late IO.Socket socket;
+
+  // late IO.Socket meetSocket;
 
   void changeAvailable() {
     if (isFortunerOnline.value) {
@@ -59,20 +67,61 @@ class FortunerLiveController extends GetxController {
     }
   }
 
-  Future openSocket() async {}
+  Future openSocket() async {
+    String? userId = GetStorage().read(userIdKey);
+    Conversation conversation;
+    socket.onConnect((_) {
+      print('connect to socket');
+      socket.emit('fortuneTellerId', userId);
+    });
+    socket.on('returnData', (data) {
+      print(data);
+      if (data['goingCall'] == false) {
+        conversation = Conversation.fromJson(data['detail']);
+        showPopUp(conversation);
+      } else {
+        print("test3");
+      }
+    });
+  }
 
-  Future closeSocket() async {}
+  Future closeSocket() async {
+    socket.close();
+  }
 
-  Future declineMeet() async {
+  Future declineMeet(Conversation conversation) async {
+    String? fortunerId = GetStorage().read(userIdKey);
+    mainRepository.declineMeet(
+      fortunerId: fortunerId!,
+      userId: conversation.userid ?? "",
+      conversationId: conversation.sId ?? "",
+    );
     Get.back();
   }
 
-  Future acceptMeet() async {
+  Future acceptMeet(Conversation conversation) async {
+    String? fortunerId = GetStorage().read(userIdKey);
     Get.back();
-    Get.to(FortunerVideoCallView());
+    var result = await mainRepository.acceptMeet(
+      fortunerId: fortunerId!,
+      userId: conversation.userid ?? "",
+      conversationId: conversation.sId ?? "",
+    );
+    // meetSocket.onConnect((_) {
+    //   socket.emit('conversationId', conversation.sId);
+    //   print('connect to meet socket');
+    // });
+    // meetSocket.on('returnData', (data) {
+    //   print("meet socket data");
+    //   print(data);
+    // });
+    // Get.to(FortunerVideoCallView(
+    //   channelId: "",
+    //   token: conversation.agoraToken ?? "",
+    // ));
   }
 
-  Future showPopUp() async {
+  Future showPopUp(Conversation conversation) async {
     try {
       AssetsAudioPlayer.newPlayer().open(
         Audio("assets/sounds/phone-ring.mp3"),
@@ -142,7 +191,7 @@ class FortunerLiveController extends GetxController {
                         padding: MaterialStateProperty.all(
                             const EdgeInsets.symmetric(vertical: 15)),
                       ),
-                      onPressed: () => declineMeet(),
+                      onPressed: () => declineMeet(conversation),
                       child: const Text(
                         "Reddet",
                         style: TextStyle(
@@ -165,7 +214,7 @@ class FortunerLiveController extends GetxController {
                         padding: MaterialStateProperty.all(
                             const EdgeInsets.symmetric(vertical: 15)),
                       ),
-                      onPressed: () => acceptMeet(),
+                      onPressed: () => acceptMeet(conversation),
                       child: const Text(
                         "Kabul Et",
                         style: TextStyle(
@@ -191,7 +240,13 @@ class FortunerLiveController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    openSocket();
+    socket = IO.io(
+        'wss://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+        OptionBuilder().setTransports(['websocket']).build());
+    // meetSocket = IO.io(
+    //     'wss://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+    //     OptionBuilder().setTransports(['websocket']).build());
+    _setAvailable();
     isFortunerOnline.value = false;
   }
 }

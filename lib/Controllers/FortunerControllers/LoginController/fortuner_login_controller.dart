@@ -1,4 +1,3 @@
-import 'package:falcanli/Repository/Fortuner/LoginRepository/fortuner_login_repository.dart';
 import 'package:falcanli/Repository/User/LoginRepository/login_repository.dart';
 import 'package:falcanli/View/FortunerViews/MainView/fortuner_main_view.dart';
 import 'package:falcanli/View/UserViews/LoginView/user_login_view.dart';

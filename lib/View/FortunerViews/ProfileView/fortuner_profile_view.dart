@@ -5,15 +5,15 @@ import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../Controllers/UserControllers/UserProfileController/user_profile_controller.dart';
+import '../../../Controllers/FortunerControllers/ProfileController/fortuner_profile_controller.dart';
 import '../../../Globals/Constans/colors.dart';
 
-class UserProfileView extends StatelessWidget {
-  UserProfileController profileController = Get.put(UserProfileController());
+class FortunerProfileView extends StatelessWidget {
+  FortunerProfileController profileController =
+      Get.put(FortunerProfileController());
   @override
   Widget build(BuildContext context) {
-    profileController.getUserCredit();
-    // profileController.getUserDatas();
+    profileController.getUserDatas();
     return Scaffold(
       body: Stack(
         children: [
@@ -26,10 +26,12 @@ class UserProfileView extends StatelessWidget {
                 : ListView(
                     children: [
                       const SizedBox(height: 30),
-                      const CircleAvatar(
+                      CircleAvatar(
                         minRadius: 50,
                         maxRadius: 100,
-                        backgroundImage: NetworkImage(emptyUser),
+                        backgroundImage: NetworkImage(
+                            profileController.user?.photo ?? emptyUser),
+                        backgroundColor: mainColor,
                       ),
                       const SizedBox(height: 30),
                       DetailLine("Adi", profileController.user?.name ?? ""),
@@ -38,12 +40,6 @@ class UserProfileView extends StatelessWidget {
                           formatDateTime(DateTime.parse(
                               profileController.user?.birthday ?? ""))),
                       DetailLine("Burç", profileController.user?.zodiac ?? ""),
-                      profileController.isRemainingCreditLoading.value
-                          ? LoadingIndicator()
-                          : DetailLine(
-                              "Kredi Miktarı",
-                              profileController.remainingCredit.value
-                                  .toString()),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Container(

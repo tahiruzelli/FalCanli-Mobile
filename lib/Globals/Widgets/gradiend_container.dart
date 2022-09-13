@@ -1,3 +1,4 @@
+import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:flutter/material.dart';
 
 class GradiendContainer extends StatelessWidget {
@@ -6,18 +7,15 @@ class GradiendContainer extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Color(0xffeeeeee),
-            Color(0xffdddddd),
-            Color(0xffdddddd),
-            Color(0xffbbbbbb),
-            Color(0xff9a9a9a),
+            mainColor,
+            mainColor.withGreen(10),
           ],
-          stops: [0.1, 0.4, 0.7, 0.9, 1],
+          // stops: [0.1, 0.4, 0.7, 0.9, 1],
         ),
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import 'package:falcanli/Globals/Constans/enums.dart';
+import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Models/fortuner.dart';
+import 'package:falcanli/View/UserViews/FortunersView/Widgets/proffesion_line.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +21,8 @@ class FortunerCard extends StatelessWidget {
         child: ListTile(
           onTap: () => fortunerController.onFortunerCardPressed(
               fortunerController, fortuner),
-          leading: const CircleAvatar(
-            backgroundImage: NetworkImage(
-                "https://www.turuncufalcafe.com/fal-fotograflar/2019/03/falcihelen.jpg"),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(fortuner.photo ?? emptyUser),
           ),
           title: Text(fortuner.nickname ?? ""),
           subtitle: Column(

@@ -1,4 +1,4 @@
-import 'package:falcanli/View/UserViews/FortunersView/fortuner_list_view.dart';
+import 'package:falcanli/View/UserViews/FortunersView/status_select_view.dart';
 import 'package:falcanli/View/UserViews/GetCreditView/get_credit_view.dart';
 import 'package:falcanli/View/UserViews/ProfileView/user_profile_view.dart';
 import 'package:get/get.dart';
@@ -7,7 +7,7 @@ class UserMainController extends GetxController {
   RxInt currentPageIndex = 0.obs;
 
   List bodyPages = [
-    FortunerListView(),
+    StatusSelectView(),
     GetCreditView(),
     UserProfileView(),
   ];
@@ -18,7 +18,7 @@ class UserMainController extends GetxController {
 
   String getAppBarTitle() {
     if (currentPageIndex.value == 0) {
-      return "Falcılar";
+      return "Fal Canlı";
     } else if (currentPageIndex.value == 1) {
       return "Kredi Yükle";
     } else if (currentPageIndex.value == 2) {

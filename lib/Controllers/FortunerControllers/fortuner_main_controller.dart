@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../View/FortunerViews/HomeView/fortuner_home_view.dart';
+import '../../View/FortunerViews/ProfileView/fortuner_profile_view.dart';
 
 class FortunerMainController extends GetxController {
   RxInt currentPageIndex = 0.obs;
@@ -9,7 +10,7 @@ class FortunerMainController extends GetxController {
   List bodyPages = [
     FortunerHomeView(),
     Container(),
-    Container(),
+    FortunerProfileView(),
   ];
 
   void changePage(int value) {

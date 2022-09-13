@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-const Color mainColor = Color(0xff08224f);
+// const Color mainColor = Color(0xff08224f);
+const Color mainColor = Color(0xffe3783a);
 //snacbarcolors
 const Color colorInfo = Color(0xff4ba0b5);
 const Color colorWarning = Color(0xfff6c444);

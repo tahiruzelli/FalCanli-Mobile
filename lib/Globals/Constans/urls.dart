@@ -10,3 +10,4 @@ const String getCommentsUrl = "conversations/getCommentsWithFortuneTeller/"; //g
 const String getUserCreditUrl = "user-credits/remainingCredit/"; //get
 const String setAvaibleUrl = "fortune-teller/setAvailable/"; //patch
 const String setNotAvaibleUrl = "fortune-teller/setNotAvailable/"; //patch
+const String conversationUrl = "conversations"; // patch //post

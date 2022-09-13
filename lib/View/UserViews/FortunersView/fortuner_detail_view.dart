@@ -1,9 +1,11 @@
 import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
+import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Utils/strings.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
+import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:falcanli/Models/fortuner.dart';
 import 'package:falcanli/View/UserViews/FortunersView/comments_view.dart';
 import 'package:ff_stars/ff_stars.dart';
@@ -27,9 +29,14 @@ class FortunerDetailView extends StatelessWidget {
       appBar: customAppBar(
           title: fortunerController.currentFortuner?.nickname ?? "Falcı"),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            fortunerController.onGoLiveWithFortunerButtonPressed(avaibleStatus),
-        label: const Text("Falcı ile görüş!"),
+        onPressed: () => fortunerController.onGoLiveWithFortunerButtonPressed(),
+        label: Obx(
+          () => fortunerController.isfortunerResponseWaiting.value
+              ? Center(
+                  child: LoadingIndicator(),
+                )
+              : const Text("Falcı ile görüş!"),
+        ),
         backgroundColor: mainColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -40,20 +47,33 @@ class FortunerDetailView extends StatelessWidget {
             children: [
               const SizedBox(height: 30),
               SizedBox(
-                height: Get.height * 0.2,
+                height: Get.height * 0.2 + 50,
                 width: Get.width,
                 child: Row(
                   children: [
-                    SizedBox(
-                      height: Get.height * 0.2,
-                      width: Get.width * 0.8,
-                      child: const CircleAvatar(
-                        minRadius: 50,
-                        maxRadius: 100,
-                        backgroundImage: NetworkImage(
-                          "https://play-lh.googleusercontent.com/mwLEUp9QssZBnOZPcfAeRULCU2550Ofa_WK5CY9Omo8LHlrY08_h1BnXzKyHp9_zhfzg",
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          height: Get.height * 0.2,
+                          width: Get.width * 0.8,
+                          child: CircleAvatar(
+                            minRadius: 50,
+                            maxRadius: 100,
+                            backgroundImage: NetworkImage(
+                              fortunerController.currentFortuner?.photo ??
+                                  emptyUser,
+                            ),
+                          ),
                         ),
-                      ),
+                        Text(
+                          fortunerController.currentFortuner?.status ?? "",
+                          style: const TextStyle(
+                            color: iosGreyColor,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: Get.width * 0.05),
@@ -75,11 +95,12 @@ class FortunerDetailView extends StatelessWidget {
               DetailLine("İsim",
                   fortunerController.currentFortuner?.nickname ?? "Falcı"),
               DetailLine(
-                "Uzmanlık",
+                "Uzmanlık: ",
                 proffesionToString(fortunerController.currentFortuner!),
               ),
               pointLine(),
-              DetailLine("Yaş", fortunerController.currentFortuner!.age.toString()),
+              DetailLine(
+                  "Yaş", fortunerController.currentFortuner!.age.toString()),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),

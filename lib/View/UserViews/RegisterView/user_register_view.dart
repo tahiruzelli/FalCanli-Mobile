@@ -25,15 +25,15 @@ class UserRegisterView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: ListView(
               children: [
-                const Center(
-                  child: Text(
-                    "Üye Ol",
-                    style: bigTitleStyle,
-                  ),
+                Image.asset(
+                  "assets/images/logo_text.png",
+                  height: Get.height / 5,
+                  width: Get.width,
+                  fit: BoxFit.cover,
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
-                    "Tam isim", userRegisterController.nameController),
+                    "Tam İsim", userRegisterController.nameController),
                 const SizedBox(height: 20),
                 CustomTextField(
                     "E-mail Adresiniz", userRegisterController.emailController),
@@ -54,6 +54,7 @@ class UserRegisterView extends StatelessWidget {
                           userRegisterController.birtTimeOpen.value =
                               value ?? false;
                         },
+                        fillColor: MaterialStateProperty.all(mainColor)
                       ),
                     ),
                     const Text("Doğum saatimi bilmiyorum"),
@@ -89,7 +90,12 @@ class UserRegisterView extends StatelessWidget {
                                     child: Padding(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 10),
-                                      child: Text("Fotoğraf seçiniz"),
+                                      child: Text(
+                                        "Fotoğraf seçiniz",
+                                        style: TextStyle(
+                                          color: mainColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
                           )),
@@ -115,7 +121,7 @@ class UserRegisterView extends StatelessWidget {
                               )),
                               child: const Text(
                                 "Kullanım koşullarını okudum",
-                                style: TextStyle(color: colorTextGrey),
+                                style: TextStyle(color: iosGreyColor),
                               ),
                             )
                           ],
@@ -138,7 +144,7 @@ class UserRegisterView extends StatelessWidget {
                               )),
                               child: const Text(
                                 "KVKK'nu kabul ediyorum.",
-                                style: TextStyle(color: colorTextGrey),
+                                style: TextStyle(color: iosGreyColor),
                               ),
                             )
                           ],

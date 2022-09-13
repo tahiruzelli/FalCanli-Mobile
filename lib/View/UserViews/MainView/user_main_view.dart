@@ -17,11 +17,12 @@ import '../../../Globals/Constans/storage_keys.dart';
 class UserMainView extends StatelessWidget {
   final _advancedDrawerController = AdvancedDrawerController();
   UserMainController userMainController = Get.put(UserMainController());
-  UserProfileController userProfileController = Get.put(UserProfileController());
+  UserProfileController userProfileController =
+      Get.put(UserProfileController());
   Color getIconColor(int index) {
     return userMainController.currentPageIndex.value != index
         ? mainColor
-        : darkBlue;
+        : Colors.orange;
   }
 
   @override
@@ -64,12 +65,18 @@ class UserMainView extends StatelessWidget {
                 title: const Text("S.S.S."),
               ),
               ListTile(
-                onTap: ()=>Get.to(PdfView(path: "assets/pdfs/kk.pdf",title: "Kullanım Koşulları",)),
+                onTap: () => Get.to(PdfView(
+                  path: "assets/pdfs/kk.pdf",
+                  title: "Kullanım Koşulları",
+                )),
                 leading: const Icon(Icons.rule),
                 title: const Text("Kullanım Koşulları"),
               ),
               ListTile(
-                onTap: ()=> Get.to(PdfView(path: "assets/pdfs/kvkk.pdf",title: "KVKK",)),
+                onTap: () => Get.to(PdfView(
+                  path: "assets/pdfs/kvkk.pdf",
+                  title: "KVKK",
+                )),
                 leading: const Icon(Icons.rule),
                 title: const Text("KVKK"),
               ),
@@ -105,13 +112,23 @@ class UserMainView extends StatelessWidget {
                     },
                     icon: const Icon(Icons.settings),
                   )
-                : null,
+                : TextButton(
+                    onPressed: () {
+                      userMainController.changePage(1);
+                    },
+                    child: const Text(
+                      "Kredi Al",
+                      style: TextStyle(
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
           ),
           body: userMainController.getBodyPages,
           bottomNavigationBar: BottomNavigationBar(
             onTap: (int index) => userMainController.changePage(index),
             currentIndex: userMainController.currentPageIndex.value,
-            fixedColor: darkBlue,
+            fixedColor: mainColor,
             items: [
               BottomNavigationBarItem(
                 backgroundColor: iosGreyColor,

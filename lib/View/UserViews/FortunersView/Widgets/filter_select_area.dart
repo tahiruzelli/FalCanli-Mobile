@@ -20,8 +20,8 @@ class FilterSelectArea extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
-                filterArea(0, "Kahve"),
-                filterArea(1, "Tarot"),
+                filterArea(0, "Kahve", "assets/icons/kahveIcon.jpeg"),
+                filterArea(1, "Tarot", "assets/icons/tarotIcon.jpeg"),
               ],
             ),
           ),
@@ -30,8 +30,9 @@ class FilterSelectArea extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
-                filterArea(2, "Astroloji"),
-                filterArea(3, "Doğum Haritası"),
+                filterArea(2, "Astroloji", "assets/icons/astrolojiIcon.webp"),
+                filterArea(
+                    3, "Doğum Haritası", "assets/icons/dogumHaritasiIcon.jpeg"),
               ],
             ),
           )
@@ -40,7 +41,7 @@ class FilterSelectArea extends StatelessWidget {
     );
   }
 
-  Widget filterArea(int index, String title) {
+  Widget filterArea(int index, String title, String path) {
     return Expanded(
       child: SizedBox(
         child: InkWell(
@@ -65,29 +66,55 @@ class FilterSelectArea extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: SizedBox(
-                  child: Center(
-                      child: Obx(
-                    () => Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight:
-                            fortunerController.filterIndex.value == index
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                child: Obx(
+                  () => Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: fortunerController.filterIndex.value == index
+                            ? iosGreyColor
+                            : Colors.transparent,
                       ),
                     ),
-                  )),
+                    child: Center(
+                      child: Obx(
+                        () => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Image.asset(
+                                path,
+                                height: 35,
+                                width: 35,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: iosGreyColor,
+                                fontWeight:
+                                    fortunerController.filterIndex.value ==
+                                            index
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-              Obx(
-                () => Divider(
-                  color: fortunerController.filterIndex.value == index
-                      ? mainColor
-                      : Colors.transparent,
-                ),
-              )
+              // Obx(
+              //   () => Divider(
+              //     color: fortunerController.filterIndex.value == index
+              //         ? iosGreyColor
+              //         : Colors.transparent,
+              //   ),
+              // )
             ],
           ),
         ),

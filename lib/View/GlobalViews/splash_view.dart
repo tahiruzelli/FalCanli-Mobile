@@ -63,7 +63,7 @@ class StartState extends State<SplashPage> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "assets/images/fortuner.png",
+                    "assets/images/logo_icon.png",
                   ),
                 ],
               ),

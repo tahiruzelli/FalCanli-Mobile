@@ -22,31 +22,36 @@ class Fortuner {
   int? iV;
   double? averagePoint;
   int? age;
+  String? photo;
+  String? status;
 
-  Fortuner(
-      {this.sId,
-      this.sCreateuser,
-      this.sUpdateuser,
-      this.bIsdeleted,
-      this.iStatusid,
-      this.userid,
-      this.nickname,
-      this.about,
-      this.fortuneTellerStatus,
-      this.channelId,
-      this.hasTarot,
-      this.tarotServiceFee,
-      this.hasCoffee,
-      this.coffeeServiceFee,
-      this.hasBirthChart,
-      this.birthChartServiceFee,
-      this.hasAstrology,
-      this.astrologyServiceFee,
-      this.sCreatedate,
-      this.sUpdatedate,
-      this.iV,
-      this.averagePoint,
-      this.age});
+  Fortuner({
+    this.sId,
+    this.sCreateuser,
+    this.sUpdateuser,
+    this.bIsdeleted,
+    this.iStatusid,
+    this.userid,
+    this.nickname,
+    this.about,
+    this.fortuneTellerStatus,
+    this.channelId,
+    this.hasTarot,
+    this.tarotServiceFee,
+    this.hasCoffee,
+    this.coffeeServiceFee,
+    this.hasBirthChart,
+    this.birthChartServiceFee,
+    this.hasAstrology,
+    this.astrologyServiceFee,
+    this.sCreatedate,
+    this.sUpdatedate,
+    this.iV,
+    this.averagePoint,
+    this.age,
+    this.photo,
+    this.status,
+  });
 
   Fortuner.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -72,6 +77,8 @@ class Fortuner {
     iV = json['__v'];
     averagePoint = json['averagePoint']?.toDouble() ?? 0.0;
     age = json['age'];
+    photo = json['userPhoto'];
+    status = json['fortuneTellerStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +106,8 @@ class Fortuner {
     data['__v'] = iV;
     data['averagePoint'] = averagePoint?.toDouble() ?? 0;
     data['age'] = age;
+    data['userPhoto'] = photo;
+    data['fortuneTellerStatus'] = status;
     return data;
   }
 }

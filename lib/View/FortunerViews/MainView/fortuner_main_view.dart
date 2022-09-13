@@ -2,6 +2,7 @@ import 'package:falcanli/Controllers/FortunerControllers/fortuner_main_controlle
 import 'package:falcanli/Globals/Constans/storage_keys.dart';
 import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
+import 'package:falcanli/Globals/global_vars.dart';
 import 'package:falcanli/View/UserViews/LoginView/user_login_view.dart';
 import 'package:falcanli/View/UserViews/ProfileView/Pages/complete_profile_view.dart';
 import 'package:falcanli/View/UserViews/StaticPages/faq_view.dart';
@@ -17,7 +18,7 @@ class FortunerMainView extends StatelessWidget {
   Color getIconColor(int index) {
     return userMainController.currentPageIndex.value != index
         ? mainColor
-        : darkBlue;
+        : Colors.orange;
   }
 
   @override
@@ -51,7 +52,7 @@ class FortunerMainView extends StatelessWidget {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: Image.network(emptyUser),
+                child: Image.network(userImage ?? emptyUser),
               ),
               ListTile(
                 onTap: () => Get.to(FaqView()),
@@ -107,7 +108,7 @@ class FortunerMainView extends StatelessWidget {
           bottomNavigationBar: BottomNavigationBar(
             onTap: (int index) => userMainController.changePage(index),
             currentIndex: userMainController.currentPageIndex.value,
-            fixedColor: darkBlue,
+            fixedColor: Colors.orange,
             items: [
               BottomNavigationBarItem(
                 backgroundColor: iosGreyColor,

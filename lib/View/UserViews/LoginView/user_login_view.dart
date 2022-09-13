@@ -19,11 +19,11 @@ class UserLoginView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Center(
-                  child: Text(
-                    "Fal Canli",
-                    style: bigTitleStyle,
-                  ),
+                Image.asset(
+                  "assets/images/logo_text.png",
+                  height: Get.height / 5,
+                  width: Get.width,
+                  fit: BoxFit.cover,
                 ),
                 Column(
                   children: [
@@ -35,25 +35,15 @@ class UserLoginView extends StatelessWidget {
                       userLoginController.passwordController,
                       obscureText: true,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () => userLoginController
-                              .onFortunerLoginButtonPressed(),
-                          child: const Text(
-                            "Falcı Girişi",
-                            style: TextStyle(color: mainColor),
-                          ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "Şifremi Unuttum",
+                          style: TextStyle(color: iosGreyColor),
                         ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Şifremi Unuttum",
-                            style: TextStyle(color: mainColor),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
@@ -63,7 +53,7 @@ class UserLoginView extends StatelessWidget {
                         child: const Text(
                           "Hesabın mı yok? Hemen üye ol",
                           style: TextStyle(
-                            color: mainColor,
+                            color: iosGreyColor,
                           ),
                         ),
                       ),
@@ -90,7 +80,6 @@ class UserLoginView extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all(Colors.white),
             padding: MaterialStateProperty.all(
                 const EdgeInsets.symmetric(vertical: 15)),
-                
           ),
           onPressed: () => userLoginController.onLoginButtonPressed(),
           child: Obx(
