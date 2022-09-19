@@ -1,6 +1,8 @@
 import 'package:falcanli/Globals/Constans/storage_keys.dart';
+import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Utils/booleans.dart';
 import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
+import 'package:falcanli/Globals/global_vars.dart';
 import 'package:falcanli/Repository/User/ProfileRepository/user_profile_repository.dart';
 import 'package:falcanli/View/UserViews/LoginView/user_login_view.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +48,7 @@ class UserProfileController extends GetxController {
       profileRepository.getProfileDatas(userId).then((value) {
         if (isHttpOK(value['statusCode'])) {
           user = User.fromJson(value['result']);
+          userImage = user?.photo ?? emptyUser;
           isProfileDatasLoading.value = false;
         } else {
           warningSnackBar(value['message']);

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Constans/storage_keys.dart';
@@ -10,12 +8,14 @@ import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Models/conversation.dart';
 import 'package:falcanli/Repository/Fortuner/MainRepository/main_repository.dart';
-import 'package:falcanli/View/FortunerViews/VideoCallView/fortuner_video_call_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+
+import '../../../View/FortunerViews/VideoCallView/fortuner_video_call_view.dart';
+import '../../../View/UserViews/VideoCallView/video_call_view.dart';
 
 class FortunerLiveController extends GetxController {
   FortunerMainRepository mainRepository = FortunerMainRepository();
@@ -48,6 +48,11 @@ class FortunerLiveController extends GetxController {
         }
       });
     }
+    // Get.to(FortunerVideoCallView(
+    //   token:
+    //       "0064bc8ddcf1ed7459d8482cbfa369dfe88IABSVSMrmk81a0l5vB/C6Ai1DPBSJhOz4vFXN1qxXQecUQYf3+6379yDEACEsEmklB0iYwEAAQAk2iBj",
+    //   channelId: "araba.sevdasi",
+    // ));
   }
 
   Future _setNotAvailable() async {
@@ -71,12 +76,12 @@ class FortunerLiveController extends GetxController {
     String? userId = GetStorage().read(userIdKey);
     Conversation conversation;
     socket.onConnect((_) {
-      print('connect to socket');
       socket.emit('fortuneTellerId', userId);
+      print('connect to socket');
     });
     socket.on('returnData', (data) {
       print(data);
-      if (data['goingCall'] == false) {
+      if (data['haveCall'] == true) {
         conversation = Conversation.fromJson(data['detail']);
         showPopUp(conversation);
       } else {

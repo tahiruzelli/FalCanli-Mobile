@@ -18,7 +18,7 @@ class FortunerVideoCallView extends StatefulWidget {
 }
 
 class _MyAppState extends State<FortunerVideoCallView> {
-  String appId = "7bb9540794144db0ba682682b4030191";
+  String appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
   late String token;
   late String channel;
   int? _remoteUid;
@@ -31,13 +31,13 @@ class _MyAppState extends State<FortunerVideoCallView> {
     "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
     "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
   ];
-  FortunerLiveController liveVideoController = Get.find();
+  // FortunerLiveController liveVideoController = Get.find();
   @override
   void initState() {
     super.initState();
-    initAgora();
     token = widget.token;
     channel = widget.channelId;
+    initAgora();
   }
 
   Future<void> initAgora() async {
@@ -249,3 +249,113 @@ class _MyAppState extends State<FortunerVideoCallView> {
     _engine.switchCamera();
   }
 }
+
+// import 'dart:async';
+
+// import 'package:agora_rtc_engine/rtc_engine.dart';
+// import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
+// import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+// import 'package:flutter/material.dart';
+// import 'package:permission_handler/permission_handler.dart';
+
+// const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
+// const token =
+//     "0064bc8ddcf1ed7459d8482cbfa369dfe88IABSVSMrmk81a0l5vB/C6Ai1DPBSJhOz4vFXN1qxXQecUQYf3+6379yDEACEsEmklB0iYwEAAQAk2iBj";
+// const channel = "araba.sevdasi";
+
+// class FortunerVideoCallView extends StatefulWidget {
+//   String channelId;
+//   String token;
+//   FortunerVideoCallView({required this.channelId, required this.token});
+//   @override
+//   _MyAppState createState() => _MyAppState();
+// }
+
+// class _MyAppState extends State<FortunerVideoCallView> {
+//   int? _remoteUid;
+//   bool _localUserJoined = false;
+//   late RtcEngine _engine;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     initAgora();
+//   }
+
+//   Future<void> initAgora() async {
+//     // retrieve permissions
+//     await [Permission.microphone, Permission.camera].request();
+
+//     //create the engine
+//     _engine = await RtcEngine.create(appId);
+//     await _engine.enableVideo();
+//     _engine.setEventHandler(
+//       RtcEngineEventHandler(
+//         joinChannelSuccess: (String channel, int uid, int elapsed) {
+//           print("local user $uid joined");
+//           setState(() {
+//             _localUserJoined = true;
+//           });
+//         },
+//         userJoined: (int uid, int elapsed) {
+//           print("remote user $uid joined");
+//           setState(() {
+//             _remoteUid = uid;
+//           });
+//         },
+//         userOffline: (int uid, UserOfflineReason reason) {
+//           print("remote user $uid left channel");
+//           setState(() {
+//             _remoteUid = null;
+//           });
+//         },
+//       ),
+//     );
+
+//     await _engine.joinChannel(token, channel, null, 0);
+//   }
+
+//   // Create UI with local view and remote view
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Agora Video Call'),
+//       ),
+//       body: Stack(
+//         children: [
+//           Center(
+//             child: _remoteVideo(),
+//           ),
+//           Align(
+//             alignment: Alignment.topLeft,
+//             child: Container(
+//               width: 100,
+//               height: 150,
+//               child: Center(
+//                 child: _localUserJoined
+//                     ? RtcLocalView.SurfaceView()
+//                     : CircularProgressIndicator(),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   // Display remote user's video
+//   Widget _remoteVideo() {
+//     if (_remoteUid != null) {
+//       return RtcRemoteView.SurfaceView(
+//         uid: _remoteUid!,
+//         channelId: channel,
+//       );
+//     } else {
+//       return Text(
+//         'Please wait for remote user to join',
+//         textAlign: TextAlign.center,
+//       );
+//     }
+//   }
+// }

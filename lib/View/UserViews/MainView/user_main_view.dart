@@ -2,6 +2,7 @@ import 'package:falcanli/Controllers/UserControllers/UserProfileController/user_
 import 'package:falcanli/Controllers/UserControllers/user_main_controller.dart';
 import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
+import 'package:falcanli/Globals/global_vars.dart';
 import 'package:falcanli/Repository/User/ProfileRepository/user_profile_repository.dart';
 import 'package:falcanli/View/GlobalViews/pdf_view.dart';
 import 'package:falcanli/View/UserViews/LoginView/user_login_view.dart';
@@ -57,7 +58,7 @@ class UserMainView extends StatelessWidget {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: Image.network(emptyUser),
+                child: Image.network(userImage ?? emptyUser),
               ),
               ListTile(
                 onTap: () => Get.to(FaqView()),

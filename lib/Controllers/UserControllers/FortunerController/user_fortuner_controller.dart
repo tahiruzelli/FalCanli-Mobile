@@ -7,10 +7,10 @@ import 'package:falcanli/Globals/Utils/exit_app.dart';
 import 'package:falcanli/Models/conversation.dart';
 import 'package:falcanli/Repository/User/FortunerRepository/fortuner_repository.dart';
 import 'package:falcanli/View/UserViews/FortunersView/fortuner_detail_view.dart';
-import 'package:falcanli/View/UserViews/VideoCallView/add_photo_view.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import '../../../Globals/Widgets/custom_snackbar.dart';
 import '../../../Models/comment.dart';
 import '../../../Models/fortuner.dart';
@@ -19,6 +19,8 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class UserFortunerController extends GetxController {
   FortunerRepository fortunerRepository = FortunerRepository();
+
+  late IO.Socket socket;
 
   RxInt filterIndex = 0.obs;
 
@@ -87,91 +89,74 @@ class UserFortunerController extends GetxController {
   }
 
   Future onGoLiveWithFortunerButtonPressed() async {
-    String? userId = GetStorage().read(userIdKey);
-    var result;
-    Conversation conversation;
-    if (userId == null) {
-      exitApp();
-    } else if (currentFortuner == null) {
-      Get.back();
-      warningSnackBar("Falcı seçiminde hata oluştu");
-    } else {
-      isfortunerResponseWaiting.value = true;
-      if (fortuneType == FortuneType.coffee) {
-        if (images.length != 3) {
-          warningSnackBar("3 adet fotoğraf çekmeniz gerekmektedir");
-        } else {
-          result = await fortunerRepository.startConversation(
-            fortunerTellerId: currentFortuner?.sId ?? "",
-            userId: userId,
-            conversationType: getFortuneTypeString(fortuneType!),
-            photo1: images[0],
-            photo2: images[1],
-            photo3: images[3],
-          );
-        }
-      } else {
-        result = await fortunerRepository.startConversation(
-          fortunerTellerId: currentFortuner?.sId ?? "",
-          userId: userId,
-          conversationType: getFortuneTypeString(fortuneType!),
-        );
-      }
-      if (isHttpOK(result["statusCode"])) {
-        conversation = Conversation.fromJson(result['result']);
-        Timer(const Duration(minutes: 5), () {
-          isfortunerResponseWaiting.value = false;
-          warningSnackBar(
-              "Falcı gerekli sürede cevap vermedi, isteğiniz kapanmıştır. Daha sonra tekrar deneyiniz");
-        });
-        IO.Socket socket = IO.io(
-            'wss://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
-            IO.OptionBuilder().setTransports(['websocket']).build());
+    Get.to(UserVideoCallView(
+      token:
+          "0064bc8ddcf1ed7459d8482cbfa369dfe88IABSVSMrmk81a0l5vB/C6Ai1DPBSJhOz4vFXN1qxXQecUQYf3+6379yDEACEsEmklB0iYwEAAQAk2iBj",
+      channelId: "araba.sevdasi",
+    ));
+    // String? userId = GetStorage().read(userIdKey);
+    // var result;
+    // Conversation conversation;
+    // if (userId == null) {
+    //   exitApp();
+    // } else if (currentFortuner == null) {
+    //   Get.back();
+    //   warningSnackBar("Falcı seçiminde hata oluştu");
+    // } else {
+    //   isfortunerResponseWaiting.value = true;
+    //   if (fortuneType == FortuneType.coffee) {
+    //     if (images.length != 3) {
+    //       warningSnackBar("3 adet fotoğraf çekmeniz gerekmektedir");
+    //     } else {
+    //       result = await fortunerRepository.startConversation(
+    //         fortunerTellerId: currentFortuner?.sId ?? "",
+    //         userId: userId,
+    //         conversationType: getFortuneTypeString(fortuneType!),
+    //         photo1: images[0],
+    //         photo2: images[1],
+    //         photo3: images[3],
+    //       );
+    //     }
+    //   } else {
+    //     result = await fortunerRepository.startConversation(
+    //       fortunerTellerId: currentFortuner?.sId ?? "",
+    //       userId: userId,
+    //       conversationType: getFortuneTypeString(fortuneType!),
+    //     );
+    //   }
+    //   if (isHttpOK(result["statusCode"])) {
+    //     conversation = Conversation.fromJson(result['result']);
+    //     Timer(const Duration(minutes: 5), () {
+    //       isfortunerResponseWaiting.value = false;
+    //       warningSnackBar(
+    //           "Falcı gerekli sürede cevap vermedi, isteğiniz kapanmıştır. Daha sonra tekrar deneyiniz");
+    //     });
 
-        socket.onConnect((_) {
-          print('connect');
-          socket.emit('conversationId', conversation.sId);
-        });
-        socket.on('returnData', (data) {
-          print(data);
-          if (data['goingCall']) {
-            isfortunerResponseWaiting.value = false;
-            startVideoCall();
-          }
-        });
-        socket.on('event', (data) => print(data));
-        socket.onDisconnect((_) => print('disconnect'));
-        socket.on('fromServer', (_) => print(_));
-        //When an event recieved from server, data is added to the stream
-        socket.on('event', (data) => data.toString());
-        socket.onDisconnect((_) => print('disconnect'));
-      } else {
-        warningSnackBar(result["message"]);
-      }
-    }
-    // switch (fortuneType!) {
-    //   case FortuneType.coffee:
-    //     Get.to(AddPhotoView());
-    //     break;
-    //   case FortuneType.astrology:
-    //     startVideoCall();
-    //     break;
-    //   case FortuneType.natalChart:
-    //     startVideoCall();
-    //     break;
-    //   case FortuneType.tarot:
-    //     startVideoCall();
-    //     break;
+    //     socket.onConnect((_) {
+    //       socket.emit('fortuneTellerId', "631f246876ea5da702ba58c0");
+    //     });
+    //     socket.on('returnData', (data) {
+    //       print(data);
+    //     });
+    //   } else {
+    //     warningSnackBar(result["message"]);
+    //   }
     // }
   }
 
   Future startVideoCall() async {
-    Get.to(UserVideoCallView());
+    Get.to(UserVideoCallView(
+      token: "",
+      channelId: "",
+    ));
   }
 
   @override
   void onInit() {
     fortuneType = FortuneType.tarot;
+    socket = IO.io(
+        'wss://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+        OptionBuilder().setTransports(['websocket']).build());
     super.onInit();
   }
 }
