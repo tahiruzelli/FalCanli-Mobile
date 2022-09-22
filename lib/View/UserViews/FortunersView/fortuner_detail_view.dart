@@ -1,5 +1,6 @@
 import 'package:falcanli/Controllers/UserControllers/FortunerController/user_fortuner_controller.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
+import 'package:falcanli/Globals/Constans/enums.dart';
 import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Utils/strings.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
@@ -8,6 +9,7 @@ import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:falcanli/Models/fortuner.dart';
 import 'package:falcanli/View/UserViews/FortunersView/comments_view.dart';
+import 'package:falcanli/View/UserViews/VideoCallView/video_call_view.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

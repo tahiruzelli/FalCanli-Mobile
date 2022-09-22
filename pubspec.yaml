@@ -43,6 +43,7 @@ dependencies:
   agora_rtc_engine: ^5.2.0
   permission_handler: ^10.0.0
   image_picker: ^0.8.1
+  flutter_facebook_auth: ^4.4.1+1
   # in_app_purchase: ^3.0.6
   shared_preferences: ^2.0.15
   #service
@@ -59,6 +60,7 @@ dependencies:
   #util
   jwt_decode: ^0.3.1
   syncfusion_flutter_pdfviewer: ^20.2.45-beta
+  uri_to_file: ^0.2.0
 
 dev_dependencies:
   flutter_test:

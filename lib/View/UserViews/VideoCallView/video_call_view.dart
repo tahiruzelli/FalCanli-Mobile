@@ -251,22 +251,35 @@
 // }
 
 import 'dart:async';
-
+import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
+import 'package:get/get.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+
+import '../../../Globals/Constans/enums.dart';
+import '../../../Globals/Widgets/loading_indicator.dart';
 
 const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
-const token =
-    "007eJxTYFi8XPFmd9hzMQGLGzK/w5cumGqnfjjhtWjNr+xE9SOzl5YpMJgkJVukpCSnGaammJuYWqZYmFgYJSelJRqbWaakpVpYbL2gkGyipJRcx6PLwsgAgSA+L0NiUWJSol5xallKYnEmAwMAuW4jcA==";
-const channel = "araba.sevdasi";
+String token =
+    "0064bc8ddcf1ed7459d8482cbfa369dfe88IAAxR+++zpKQv4pbKpBdxoYQn8eN1Aq838e8paTAqlNYAwYf3+6379yDEACEsEmk13grYwEAAQBnNSpj";
+String channel = "channelName";
 
 class UserVideoCallView extends StatefulWidget {
   String channelId;
   String token;
-  UserVideoCallView({required this.channelId, required this.token});
+  String conversationId;
+  FortuneType fortuneType;
+  UserVideoCallView({
+    required this.channelId,
+    required this.token,
+    required this.conversationId,
+    required this.fortuneType,
+  });
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -276,10 +289,38 @@ class _MyAppState extends State<UserVideoCallView> {
   bool _localUserJoined = false;
   late RtcEngine _engine;
 
+  late IO.Socket meetSocket;
+  bool showToolBar = true;
+
+  List<String> imageLinks = [
+    "https://i2.milimaj.com/i/milliyet/75/0x410/5c8d168007291c1d740169dc.jpg",
+    "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
+    "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
+  ];
+
+  bool muted = false;
+
   @override
   void initState() {
     super.initState();
+    token = widget.token;
+    channel = widget.channelId;
+    // openSocket();
     initAgora();
+  }
+
+  void openSocket() {
+    meetSocket = IO.io(
+        'https://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+        OptionBuilder().setTransports(['websocket']).build());
+    meetSocket.onConnect((data) {
+      meetSocket.emit("conversationId", {"data": widget.conversationId});
+    });
+    meetSocket.on("returnData", (data) {
+      if (data['haveCall'] == false) {
+        warningSnackBar("Görüşme sonlandırılmıştır");
+      }
+    });
   }
 
   Future<void> initAgora() async {
@@ -312,7 +353,7 @@ class _MyAppState extends State<UserVideoCallView> {
       ),
     );
 
-    await _engine.joinChannel(token, channel, null, 0);
+    await _engine.joinChannel(token, channel, null, 1);
   }
 
   // Create UI with local view and remote view
@@ -320,29 +361,144 @@ class _MyAppState extends State<UserVideoCallView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agora Video Call'),
+        title: const Text('Tahir Uzelli'),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        _engine.leaveChannel();
-        Navigator.pop(context);
-      }),
       body: Stack(
         children: [
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                showToolBar = !showToolBar;
+              });
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.transparent,
+            ),
+          ),
           Center(
             child: _remoteVideo(),
           ),
           Align(
             alignment: Alignment.topLeft,
-            child: Container(
-              width: 100,
-              height: 150,
-              child: Center(
-                child: _localUserJoined
-                    ? RtcLocalView.SurfaceView()
-                    : CircularProgressIndicator(),
+            child: Card(
+              child: SizedBox(
+                width: 100,
+                height: 150,
+                child: Center(
+                  child: _localUserJoined
+                      ? const RtcLocalView.SurfaceView()
+                      : LoadingIndicator(),
+                ),
               ),
             ),
           ),
+          showToolBar
+              ? toolbar
+              : widget.fortuneType == FortuneType.coffee
+                  ? photos
+                  : Container(),
+        ],
+      ),
+    );
+  }
+
+  Widget get photos {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox(
+        height: 150,
+        width: MediaQuery.of(context).size.width,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List.generate(
+            imageLinks.length,
+            (index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: () {
+                      Get.dialog(
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Get.width / 10,
+                            vertical: Get.height / 5,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  imageLinks[index],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Image.network(
+                      imageLinks[index],
+                      height: 150,
+                      width: MediaQuery.of(context).size.width / 4,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget get toolbar {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.symmetric(vertical: 48),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          RawMaterialButton(
+            onPressed: _onToggleMute,
+            child: Icon(
+              muted ? Icons.mic_off : Icons.mic,
+              color: muted ? Colors.white : Colors.blueAccent,
+              size: 20.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: muted ? Colors.blueAccent : Colors.white,
+            padding: const EdgeInsets.all(12.0),
+          ),
+          RawMaterialButton(
+            onPressed: () => _onCallEnd(context),
+            child: const Icon(
+              Icons.call_end,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.redAccent,
+            padding: const EdgeInsets.all(15.0),
+          ),
+          RawMaterialButton(
+            onPressed: _onSwitchCamera,
+            child: const Icon(
+              Icons.switch_camera,
+              color: Colors.blueAccent,
+              size: 20.0,
+            ),
+            shape: const CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(12.0),
+          )
         ],
       ),
     );
@@ -356,10 +512,28 @@ class _MyAppState extends State<UserVideoCallView> {
         channelId: channel,
       );
     } else {
-      return Text(
-        'Please wait for remote user to join',
+      return const Text(
+        'Diğer katılımcı bekleniyor',
         textAlign: TextAlign.center,
       );
     }
+  }
+
+  void _onCallEnd(BuildContext context) {
+    _engine.leaveChannel();
+    // liveVideoController.meetSocket.close();
+    meetSocket.close();
+    Get.back();
+  }
+
+  void _onToggleMute() {
+    setState(() {
+      muted = !muted;
+    });
+    _engine.muteLocalAudioStream(muted);
+  }
+
+  void _onSwitchCamera() {
+    _engine.switchCamera();
   }
 }

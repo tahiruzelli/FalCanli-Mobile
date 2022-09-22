@@ -58,7 +58,15 @@ class UserLoginView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    loginButton,
+                    Column(
+                      children: [
+                        loginButton,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: facebookLoginButton,
+                        ),
+                      ],
+                    )
                   ],
                 ),
                 Container(),
@@ -94,6 +102,43 @@ class UserLoginView extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontFamily: 'OpenSans',
               ),
+            ),
+          )),
+    );
+  }
+
+  Widget get facebookLoginButton {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue),
+            padding: MaterialStateProperty.all(
+                const EdgeInsets.symmetric(vertical: 15)),
+          ),
+          onPressed: () => userLoginController.onLoginWithFacebook(),
+          child: Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.facebook,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  userLoginController.isLoginLoading.value
+                      ? "Yükleniyor..."
+                      : 'Facebook ile üye ol',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'OpenSans',
+                  ),
+                ),
+              ],
             ),
           )),
     );

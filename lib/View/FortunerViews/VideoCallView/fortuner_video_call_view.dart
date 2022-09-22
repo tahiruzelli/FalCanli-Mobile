@@ -1,43 +1,74 @@
 import 'dart:async';
+import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
+import 'package:get/get.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-import 'package:falcanli/Controllers/FortunerControllers/FortunerLiveController/fortuner_live_controller.dart';
-import 'package:falcanli/Controllers/UserControllers/LiveVideoController/live_video_controller.dart';
-import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+
+import '../../../Globals/Constans/enums.dart';
+import '../../../Globals/Widgets/loading_indicator.dart';
+
+const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
+String token =
+    "007eJxTYFi8XPFmd9hzMQGLGzK/w5cumGqnfjjhtWjNr+xE9SOzl5YpMJgkJVukpCSnGaammJuYWqZYmFgYJSelJRqbWaakpVpYbL2gkGyipJRcx6PLwsgAgSA+L0NiUWJSol5xallKYnEmAwMAuW4jcA==";
+String channel = "araba.sevdasi";
 
 class FortunerVideoCallView extends StatefulWidget {
-  final String token;
-  final String channelId;
-  FortunerVideoCallView({required this.channelId, required this.token});
+  String channelId;
+  String token;
+  String conversationId;
+  FortuneType fortuneType;
+  FortunerVideoCallView({
+    required this.channelId,
+    required this.token,
+    required this.conversationId,
+    required this.fortuneType,
+  });
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<FortunerVideoCallView> {
-  String appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
-  late String token;
-  late String channel;
   int? _remoteUid;
   bool _localUserJoined = false;
   late RtcEngine _engine;
-  bool muted = false;
+
+  late IO.Socket meetSocket;
   bool showToolBar = true;
+
   List<String> imageLinks = [
     "https://i2.milimaj.com/i/milliyet/75/0x410/5c8d168007291c1d740169dc.jpg",
     "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
     "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
   ];
-  // FortunerLiveController liveVideoController = Get.find();
+
+  bool muted = false;
+
   @override
   void initState() {
     super.initState();
     token = widget.token;
     channel = widget.channelId;
+    openSocket();
     initAgora();
+  }
+
+  void openSocket() {
+    meetSocket = IO.io(
+        'https://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+        OptionBuilder().setTransports(['websocket']).build());
+    meetSocket.onConnect((data) {
+      meetSocket.emit("conversationId", {"data": widget.conversationId});
+    });
+    meetSocket.on("returnData", (data) {
+      if (data['haveCall'] == false) {
+        warningSnackBar("Görüşme sonlandırılmıştır");
+      }
+    });
   }
 
   Future<void> initAgora() async {
@@ -111,7 +142,11 @@ class _MyAppState extends State<FortunerVideoCallView> {
               ),
             ),
           ),
-          showToolBar ? toolbar : photos,
+          showToolBar
+              ? toolbar
+              : widget.fortuneType == FortuneType.coffee
+                  ? photos
+                  : Container(),
         ],
       ),
     );
@@ -235,6 +270,7 @@ class _MyAppState extends State<FortunerVideoCallView> {
   void _onCallEnd(BuildContext context) {
     _engine.leaveChannel();
     // liveVideoController.meetSocket.close();
+    meetSocket.close();
     Get.back();
   }
 
@@ -249,6 +285,7 @@ class _MyAppState extends State<FortunerVideoCallView> {
     _engine.switchCamera();
   }
 }
+
 
 // import 'dart:async';
 

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+
 import '../../../Globals/Constans/urls.dart';
 import '../../htttp_service.dart';
 
@@ -27,20 +29,21 @@ class RegisterRepository implements IRegisterRepository {
     required String gender,
     required File file,
   }) async {
-    Map body = {
+    var images = await MultipartFile.fromFile(file.path,
+        filename: file.path.split('/').last);
+    var body = FormData.fromMap({
       "name": name,
       "lastname": lastName,
       "password": password,
       "email": email,
       "birthday": birthday,
       "gender": gender,
-      "file": file,
-    };
-    var jsonBody = const JsonEncoder().convert(body);
+      "file": images,
+    });
     var response = await RestConnector(
       baseUrl + userUrl,
       "",
-      data: jsonBody,
+      data: body,
       requestType: RequestType.media,
     ).getData();
     return response;

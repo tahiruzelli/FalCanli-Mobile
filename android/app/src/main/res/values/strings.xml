@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">falcanli</string>
+    <string name="facebook_app_id">1183277012233828</string>
+    <string name="fb_login_protocol_scheme">fb1183277012233828</string>
+    <string name="facebook_client_token">478930fc8d468c72523a1a62492456b4</string>
+</resources>

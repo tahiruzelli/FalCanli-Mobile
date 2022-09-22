@@ -76,7 +76,7 @@ class FortunerLiveController extends GetxController {
     String? userId = GetStorage().read(userIdKey);
     Conversation conversation;
     socket.onConnect((_) {
-      socket.emit('fortuneTellerId', userId);
+      socket.emit('fortuneTellerId', {"data": userId});
       print('connect to socket');
     });
     socket.on('returnData', (data) {

@@ -16,7 +16,7 @@ class AddPhotoView extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           if (fortunerController.images.length == 3) {
-            fortunerController.startVideoCall();
+            // fortunerController.startVideoCall();
           } else {
             warningSnackBar("3 Adet fotoğraf seçiniz!");
           }

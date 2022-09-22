@@ -31,7 +31,18 @@ PODS:
     - Flutter
   - assets_audio_player_web (0.0.1):
     - Flutter
+  - FBAEMKit (14.1.0):
+    - FBSDKCoreKit_Basics (= 14.1.0)
+  - FBSDKCoreKit (14.1.0):
+    - FBAEMKit (= 14.1.0)
+    - FBSDKCoreKit_Basics (= 14.1.0)
+  - FBSDKCoreKit_Basics (14.1.0)
+  - FBSDKLoginKit (14.1.0):
+    - FBSDKCoreKit (= 14.1.0)
   - Flutter (1.0.0)
+  - flutter_facebook_auth (4.4.1):
+    - FBSDKLoginKit (= 14.1.0)
+    - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
   - path_provider_ios (0.0.1):
@@ -42,6 +53,8 @@ PODS:
     - Flutter
   - syncfusion_flutter_pdfviewer (0.0.1):
     - Flutter
+  - uri_to_file (0.0.1):
+    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -50,17 +63,23 @@ DEPENDENCIES:
   - assets_audio_player (from `.symlinks/plugins/assets_audio_player/ios`)
   - assets_audio_player_web (from `.symlinks/plugins/assets_audio_player_web/ios`)
   - Flutter (from `Flutter`)
+  - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - syncfusion_flutter_pdfviewer (from `.symlinks/plugins/syncfusion_flutter_pdfviewer/ios`)
+  - uri_to_file (from `.symlinks/plugins/uri_to_file/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
   trunk:
     - AgoraIrisRTC_iOS
     - AgoraRtcEngine_iOS
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
 
 EXTERNAL SOURCES:
   agora_rtc_engine:
@@ -71,6 +90,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/assets_audio_player_web/ios"
   Flutter:
     :path: Flutter
+  flutter_facebook_auth:
+    :path: ".symlinks/plugins/flutter_facebook_auth/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider_ios:
@@ -81,6 +102,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
   syncfusion_flutter_pdfviewer:
     :path: ".symlinks/plugins/syncfusion_flutter_pdfviewer/ios"
+  uri_to_file:
+    :path: ".symlinks/plugins/uri_to_file/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -90,14 +113,20 @@ SPEC CHECKSUMS:
   AgoraRtcEngine_iOS: 549bb3853d5afb18fabca4197786f39f31141da8
   assets_audio_player: edee322b9cb625571b830b35872ead1a295fd917
   assets_audio_player_web: 19826380c44375761aa0b9053665c1e3fbc3b86b
+  FBAEMKit: a899515e45476027f73aef377b5cffadcd56ca3a
+  FBSDKCoreKit: 24f8bc8d3b5b2a8c5c656a1329492a12e8efa792
+  FBSDKCoreKit_Basics: 6e578c9bdc7aa1365dbbbde633c9ebb536bcaa98
+  FBSDKLoginKit: 787de205d524c3a4b17d527916f1d066e4361660
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_facebook_auth: 361ac7a57263ebf327f26089507ead0d66558ee8
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   syncfusion_flutter_pdfviewer: bb9998884b864cfedf72628df3503bdf57e397c0
+  uri_to_file: c4726881848febf4806f0a5707bd12903e02b0f0
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
-PODFILE CHECKSUM: 18ac31be098e046c4cacffab17a4398ccc075d26
+PODFILE CHECKSUM: ea1026b38243d7b737caec92d5a1941d7c48f96d
 
 COCOAPODS: 1.11.3

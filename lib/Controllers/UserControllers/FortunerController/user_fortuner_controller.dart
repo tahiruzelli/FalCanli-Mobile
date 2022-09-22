@@ -89,73 +89,67 @@ class UserFortunerController extends GetxController {
   }
 
   Future onGoLiveWithFortunerButtonPressed() async {
-    Get.to(UserVideoCallView(
-      token:
-          "0064bc8ddcf1ed7459d8482cbfa369dfe88IABSVSMrmk81a0l5vB/C6Ai1DPBSJhOz4vFXN1qxXQecUQYf3+6379yDEACEsEmklB0iYwEAAQAk2iBj",
-      channelId: "araba.sevdasi",
-    ));
-    // String? userId = GetStorage().read(userIdKey);
-    // var result;
-    // Conversation conversation;
-    // if (userId == null) {
-    //   exitApp();
-    // } else if (currentFortuner == null) {
-    //   Get.back();
-    //   warningSnackBar("Falcı seçiminde hata oluştu");
-    // } else {
-    //   isfortunerResponseWaiting.value = true;
-    //   if (fortuneType == FortuneType.coffee) {
-    //     if (images.length != 3) {
-    //       warningSnackBar("3 adet fotoğraf çekmeniz gerekmektedir");
-    //     } else {
-    //       result = await fortunerRepository.startConversation(
-    //         fortunerTellerId: currentFortuner?.sId ?? "",
-    //         userId: userId,
-    //         conversationType: getFortuneTypeString(fortuneType!),
-    //         photo1: images[0],
-    //         photo2: images[1],
-    //         photo3: images[3],
-    //       );
-    //     }
-    //   } else {
-    //     result = await fortunerRepository.startConversation(
-    //       fortunerTellerId: currentFortuner?.sId ?? "",
-    //       userId: userId,
-    //       conversationType: getFortuneTypeString(fortuneType!),
-    //     );
-    //   }
-    //   if (isHttpOK(result["statusCode"])) {
-    //     conversation = Conversation.fromJson(result['result']);
-    //     Timer(const Duration(minutes: 5), () {
-    //       isfortunerResponseWaiting.value = false;
-    //       warningSnackBar(
-    //           "Falcı gerekli sürede cevap vermedi, isteğiniz kapanmıştır. Daha sonra tekrar deneyiniz");
-    //     });
+    String? userId = GetStorage().read(userIdKey);
+    var result;
+    Conversation conversation;
+    if (userId == null) {
+      exitApp();
+    } else if (currentFortuner == null) {
+      Get.back();
+      warningSnackBar("Falcı seçiminde hata oluştu");
+    } else {
+      isfortunerResponseWaiting.value = true;
+      if (fortuneType == FortuneType.coffee) {
+        if (images.length != 3) {
+          warningSnackBar("3 adet fotoğraf çekmeniz gerekmektedir");
+        } else {
+          result = await fortunerRepository.startConversation(
+            fortunerTellerId: currentFortuner?.sId ?? "",
+            userId: userId,
+            conversationType: getFortuneTypeString(fortuneType!),
+            photo1: images[0],
+            photo2: images[1],
+            photo3: images[3],
+          );
+        }
+      } else {
+        result = await fortunerRepository.startConversation(
+          fortunerTellerId: currentFortuner?.sId ?? "",
+          userId: userId,
+          conversationType: getFortuneTypeString(fortuneType!),
+        );
+      }
+      if (isHttpOK(result["statusCode"])) {
+        conversation = Conversation.fromJson(result['result']);
+        Timer(const Duration(minutes: 5), () {
+          isfortunerResponseWaiting.value = false;
+          warningSnackBar(
+              "Falcı gerekli sürede cevap vermedi, isteğiniz kapanmıştır. Daha sonra tekrar deneyiniz");
+        });
 
-    //     socket.onConnect((_) {
-    //       socket.emit('fortuneTellerId', "631f246876ea5da702ba58c0");
-    //     });
-    //     socket.on('returnData', (data) {
-    //       print(data);
-    //     });
-    //   } else {
-    //     warningSnackBar(result["message"]);
-    //   }
-    // }
-  }
-
-  Future startVideoCall() async {
-    Get.to(UserVideoCallView(
-      token: "",
-      channelId: "",
-    ));
+        socket.emit('fortuneTellerId', {"data": conversation.fortuneTellerId});
+        socket.on('returnData', (data) {
+          print(data);
+          if (data['haveCall']) {
+            Get.to(UserVideoCallView(
+              token: data['detail']["agoraToken"],
+              channelId: currentFortuner?.channelId ?? "",
+              conversationId: conversation.sId ?? "",
+              fortuneType: fortuneType!,
+            ));
+          }
+        });
+      } else {
+        warningSnackBar(result["message"]);
+      }
+    }
   }
 
   @override
   void onInit() {
     fortuneType = FortuneType.tarot;
     socket = IO.io(
-        'wss://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+        'https://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
         OptionBuilder().setTransports(['websocket']).build());
     super.onInit();
   }

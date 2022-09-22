@@ -23,9 +23,8 @@ class StatusSelectView extends StatelessWidget {
           GradiendContainer(),
           ListView(
             children: [
-              const SizedBox(height: 16),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
                 child: Text(
                   "Merhaba Tahir, Fal Canlı'ya hoşgeldin! Burada kahve, tarot, astroloji ya da doğum haritası fallarına baktırarak geleceğin hakkında yorumlar alıp tahminler yürütebilirsin! Hemen bir tık uzağında! Üstelik bunu falcı ile görüntülü bir şekilde konuşurken yapabilirsin. Haydı durma kredi yükleyip hemen falcılarımızla görüşmeye başla!",
                   style: TextStyle(
@@ -40,61 +39,61 @@ class StatusSelectView extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      imageCard("assets/icons/kahveIcon.jpeg", "Kahve", () {}),
+                      imageCard("assets/icons/kahveIcon.png", "Kahve", () {}),
                       imageCard("assets/icons/tarotIcon.png", "Tarot", () {}),
                     ],
                   ),
                   Row(
                     children: [
-                      imageCard("assets/icons/astrolojiIcon.jpeg", "Astoroloji",
+                      imageCard("assets/icons/astrolojiIcon.png", "Astoroloji",
                           () {}),
-                      imageCard("assets/icons/dogumHaritasiIcon.jpeg",
+                      imageCard("assets/icons/dogumHaritasiIcon.png",
                           "Doğum Haritası", () {}),
                     ],
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Güncel Kredin: ",
-                    style: TextStyle(
-                      color: iosGreyColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Obx(
-                    () => profileController.isRemainingCreditLoading.value
-                        ? Center(
-                            child: LoadingIndicator(),
-                          )
-                        : Text(
-                            profileController.remainingCredit.value.toString(),
-                            style: const TextStyle(
-                              color: iosGreyColor,
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      UserMainController userMainController = Get.find();
-                      userMainController.changePage(1);
-                    },
-                    child: const Text(
-                      "Kredi Al!",
-                      style: TextStyle(
-                        color: colorSuccess,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     const Text(
+              //       "Güncel Kredin: ",
+              //       style: TextStyle(
+              //         color: iosGreyColor,
+              //         fontSize: 18,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
+              //     Obx(
+              //       () => profileController.isRemainingCreditLoading.value
+              //           ? Center(
+              //               child: LoadingIndicator(),
+              //             )
+              //           : Text(
+              //               profileController.remainingCredit.value.toString(),
+              //               style: const TextStyle(
+              //                 color: iosGreyColor,
+              //                 fontSize: 18,
+              //                 fontWeight: FontWeight.normal,
+              //               ),
+              //             ),
+              //     ),
+              //     TextButton(
+              //       onPressed: () {
+              //         UserMainController userMainController = Get.find();
+              //         userMainController.changePage(1);
+              //       },
+              //       child: const Text(
+              //         "Kredi Al!",
+              //         style: TextStyle(
+              //           color: colorSuccess,
+              //           fontWeight: FontWeight.bold,
+              //           fontSize: 25,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ],
@@ -122,7 +121,7 @@ class StatusSelectView extends StatelessWidget {
       },
       child: SizedBox(
         width: Get.width / 2,
-        height: Get.height / 4 + 45,
+        height: Get.width / 2 + 45,
         child: Column(
           children: [
             Align(
@@ -151,14 +150,11 @@ class StatusSelectView extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  path,
-                  fit: BoxFit.cover,
-                  height: Get.height / 4,
-                  width: Get.width / 2 - 16,
-                ),
+              child: Image.asset(
+                path,
+                fit: BoxFit.cover,
+                height: Get.width / 2 - 30,
+                width: Get.width / 2 - 30,
               ),
             ),
           ],
