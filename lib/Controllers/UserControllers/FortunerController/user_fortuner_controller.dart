@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'package:falcanli/Globals/Constans/enums.dart';
 import 'package:falcanli/Globals/Constans/storage_keys.dart';
-import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Utils/booleans.dart';
 import 'package:falcanli/Globals/Utils/exit_app.dart';
 import 'package:falcanli/Globals/global_vars.dart';
 import 'package:falcanli/Models/conversation.dart';
+import 'package:falcanli/Repository/User/CreditRepository/user_credit_repository.dart';
 import 'package:falcanli/Repository/User/FortunerRepository/fortuner_repository.dart';
+import 'package:falcanli/Repository/User/ProfileRepository/user_profile_repository.dart';
 import 'package:falcanli/View/UserViews/FortunersView/fortuner_detail_view.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -16,7 +17,6 @@ import 'package:socket_io_client/socket_io_client.dart';
 import '../../../Globals/Widgets/custom_snackbar.dart';
 import '../../../Models/comment.dart';
 import '../../../Models/fortuner.dart';
-import '../../../View/FortunerViews/VideoCallView/fortuner_video_call_view.dart';
 import '../../../View/UserViews/VideoCallView/video_call_view.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -40,6 +40,7 @@ class UserFortunerController extends GetxController {
   FortuneType? fortuneType;
   Fortuner? currentFortuner;
   List<Comment> comments = [];
+  int? currentAmount;
 
   Future getImage() async {
     List<XFile>? image = await ImagePicker().pickMultiImage();
@@ -50,6 +51,45 @@ class UserFortunerController extends GetxController {
       if ((image.length + images.length) > 3) {
         warningSnackBar("En fazla 3 adet fotoğraf yükleyebilirsiniz!");
       }
+    }
+  }
+
+  Future<bool> isUserHaveEnoughCredit(String userId) async {
+    var response = await UserProfileRepository().getUserCredit(userId);
+    int currentCredit = response['result']['remainingCredit'];
+    switch (fortuneType!) {
+      case FortuneType.coffee:
+        currentAmount = currentFortuner!.coffeeServiceFee!;
+        if (currentCredit >= currentAmount!) {
+          return true;
+        } else {
+          errorSnackBar("Yeterli krediniz bulunmamaktadir");
+          return false;
+        }
+      case FortuneType.astrology:
+        currentAmount = currentFortuner!.astrologyServiceFee!;
+        if (currentCredit >= currentAmount!) {
+          return true;
+        } else {
+          errorSnackBar("Yeterli krediniz bulunmamaktadir");
+          return false;
+        }
+      case FortuneType.natalChart:
+        currentAmount = currentFortuner!.birthChartServiceFee!;
+        if (currentCredit >= currentAmount!) {
+          return true;
+        } else {
+          errorSnackBar("Yeterli krediniz bulunmamaktadir");
+          return false;
+        }
+      case FortuneType.tarot:
+        currentAmount = currentFortuner!.tarotServiceFee!;
+        if (currentCredit >= currentAmount!) {
+          return true;
+        } else {
+          errorSnackBar("Yeterli krediniz bulunmamaktadir");
+          return false;
+        }
     }
   }
 
@@ -106,8 +146,9 @@ class UserFortunerController extends GetxController {
     } else if (currentFortuner == null) {
       Get.back();
       warningSnackBar("Falcı seçiminde hata oluştu");
-    } else {
+    } else if (await isUserHaveEnoughCredit(userId)) {
       isfortunerResponseWaiting.value = true;
+
       if (fortuneType == FortuneType.coffee) {
         if (images.length != 3) {
           warningSnackBar("3 adet fotoğraf çekmeniz gerekmektedir");
@@ -130,7 +171,6 @@ class UserFortunerController extends GetxController {
       }
       if (isHttpOK(result["statusCode"])) {
         conversation = Conversation.fromJson(result['result']);
-        print(conversation.sId);
         Timer(const Duration(minutes: 5), () {
           isfortunerResponseWaiting.value = false;
           warningSnackBar(
@@ -153,6 +193,11 @@ class UserFortunerController extends GetxController {
               if (data['goingCall']) {
                 print("go to call");
                 shouldReInitVideo = true;
+                UserCreditRepository().spendCredit(
+                  amount: currentAmount ?? 0,
+                  userId: userId,
+                  fortuneTellerId: currentFortuner?.sId ?? "",
+                );
                 Get.to(UserVideoCallView(
                   token: firstSocketData['detail']["agoraToken"],
                   channelId: currentFortuner?.channelId ?? "",
