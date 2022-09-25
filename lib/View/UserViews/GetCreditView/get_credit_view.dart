@@ -1,8 +1,10 @@
+import 'package:falcanli/Controllers/UserControllers/CreditController/user_credit_controller.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Widgets/big_button.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/View/UserViews/GetCreditView/Widgets/intro_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class GetCreditView extends StatefulWidget {
   @override
@@ -11,6 +13,8 @@ class GetCreditView extends StatefulWidget {
 
 class _VipMebershipState extends State<GetCreditView> {
   List<bool> selectedList = [false, false, true, false];
+  int selectedAmount = 5000;
+  UserCreditController userCreditController = Get.put(UserCreditController());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -24,16 +28,22 @@ class _VipMebershipState extends State<GetCreditView> {
                 IntroSlider(),
                 Row(
                   children: [
-                    membershipType(0, size, ["500", "59,90₺"]),
-                    membershipType(1, size, ["2500", "69,99₺"]),
-                    membershipType(2, size, ["5000", "104,99₺"]),
-                    membershipType(3, size, ["10000", "149,99 ₺"]),
+                    membershipType(0, size, [500, "59,90₺"]),
+                    membershipType(1, size, [2500, "69,99₺"]),
+                    membershipType(2, size, [5000, "104,99₺"]),
+                    membershipType(3, size, [10000, "149,99 ₺"]),
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: BigButton("Kredi Al", () {}),
-                ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Obx(
+                      () => BigButton(
+                          userCreditController.isGetCreditLoading.value
+                              ? "Yükleniyor"
+                              : "Kredi Al", () {
+                        userCreditController.getCredit(selectedAmount);
+                      }),
+                    )),
               ],
             ),
           ],
@@ -51,6 +61,7 @@ class _VipMebershipState extends State<GetCreditView> {
             index == i ? selectedList[i] = true : selectedList[i] = false;
           });
         }
+        selectedAmount = texts[0];
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
@@ -71,7 +82,7 @@ class _VipMebershipState extends State<GetCreditView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  texts[0],
+                  texts[0].toString(),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: mainColor,

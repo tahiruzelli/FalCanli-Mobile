@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import '../Constans/colors.dart';
 
-errorSnackBar(String content, {String title = 'Uyarı'}) {
+errorSnackBar(String content, {String title = 'Hata'}) {
   return Get.snackbar(
     title,
     content,
@@ -19,7 +19,7 @@ warningSnackBar(String content, {String title = 'Uyarı'}) {
   );
 }
 
-infoSnackBar(String content, {String title = 'Uyarı'}) {
+infoSnackBar(String content, {String title = 'Bilgi'}) {
   return Get.snackbar(
     title,
     content,
@@ -28,7 +28,7 @@ infoSnackBar(String content, {String title = 'Uyarı'}) {
   );
 }
 
-successSnackBar(String content, {String title = 'Uyarı'}) {
+successSnackBar(String content, {String title = 'Başarı'}) {
   return Get.snackbar(
     title,
     content,
