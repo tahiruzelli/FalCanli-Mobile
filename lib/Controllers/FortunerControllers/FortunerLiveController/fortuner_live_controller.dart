@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
+import 'package:falcanli/Globals/Constans/enums.dart';
 import 'package:falcanli/Globals/Constans/storage_keys.dart';
 import 'package:falcanli/Globals/Constans/urls.dart';
 import 'package:falcanli/Globals/Utils/booleans.dart';
@@ -7,7 +8,10 @@ import 'package:falcanli/Globals/Utils/exit_app.dart';
 import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
 import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Models/conversation.dart';
+import 'package:falcanli/Models/fortuner.dart';
+import 'package:falcanli/Models/user.dart';
 import 'package:falcanli/Repository/Fortuner/MainRepository/main_repository.dart';
+import 'package:falcanli/Repository/User/ProfileRepository/user_profile_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -15,10 +19,10 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../../View/FortunerViews/VideoCallView/fortuner_video_call_view.dart';
-import '../../../View/UserViews/VideoCallView/video_call_view.dart';
 
 class FortunerLiveController extends GetxController {
   FortunerMainRepository mainRepository = FortunerMainRepository();
+  UserProfileRepository profileRepository = UserProfileRepository();
 
   RxBool isFortunerOnline = false.obs;
   late IO.Socket socket;
@@ -79,11 +83,14 @@ class FortunerLiveController extends GetxController {
       socket.emit('fortuneTellerId', {"data": userId});
       print('connect to socket');
     });
-    socket.on('returnData', (data) {
+    socket.on('returnData', (data) async {
       print(data);
       if (data['haveCall'] == true) {
         conversation = Conversation.fromJson(data['detail']);
-        showPopUp(conversation);
+        var userResult =
+            await profileRepository.getProfileDatas(conversation.userid ?? "");
+        User user = User.fromJson(userResult['result']);
+        showPopUp(conversation, user, data['detail']['agoraTokenUid'] ?? 1);
       } else {
         print("test3");
       }
@@ -104,7 +111,7 @@ class FortunerLiveController extends GetxController {
     Get.back();
   }
 
-  Future acceptMeet(Conversation conversation) async {
+  Future acceptMeet(Conversation conversation, int uid) async {
     String? fortunerId = GetStorage().read(userIdKey);
     Get.back();
     var result = await mainRepository.acceptMeet(
@@ -112,21 +119,34 @@ class FortunerLiveController extends GetxController {
       userId: conversation.userid ?? "",
       conversationId: conversation.sId ?? "",
     );
-    // meetSocket.onConnect((_) {
-    //   socket.emit('conversationId', conversation.sId);
-    //   print('connect to meet socket');
-    // });
-    // meetSocket.on('returnData', (data) {
-    //   print("meet socket data");
-    //   print(data);
-    // });
-    // Get.to(FortunerVideoCallView(
-    //   channelId: "",
-    //   token: conversation.agoraToken ?? "",
-    // ));
+    print(result);
+    if (isHttpOK(result["statusCode"])) {
+      var fortunerDataResult =
+          await mainRepository.getFortunerDataWithUserId(fortunerId);
+      if (isHttpOK(fortunerDataResult['statusCode'])) {
+        Fortuner fortuner = Fortuner.fromJson(fortunerDataResult['result']);
+        Get.to(FortunerVideoCallView(
+          channelId: fortuner.channelId ?? "",
+          token: conversation.agoraToken ?? "",
+          conversationId: conversation.sId ?? "",
+          fortuneType: conversation.conversationType! == "tarot"
+              ? FortuneType.tarot
+              : conversation.conversationType! == "kahve"
+                  ? FortuneType.coffee
+                  : conversation.conversationType! == "astroloji"
+                      ? FortuneType.astrology
+                      : FortuneType.natalChart,
+          uid: uid,
+        ));
+      } else {
+        warningSnackBar("Bir sorun olustu daha sonra tekrar deneyin");
+      }
+    } else {
+      warningSnackBar(result['message']);
+    }
   }
 
-  Future showPopUp(Conversation conversation) async {
+  Future showPopUp(Conversation conversation, User user, int uid) async {
     try {
       AssetsAudioPlayer.newPlayer().open(
         Audio("assets/sounds/phone-ring.mp3"),
@@ -157,15 +177,20 @@ class FortunerLiveController extends GetxController {
                       Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: ClipRRect(
-                          child:
-                              Image.network(emptyUser, height: 40, width: 40),
+                          child: Image.network(user.photo ?? emptyUser,
+                              height: 40, width: 40),
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
                       const SizedBox(width: 20),
-                      const Text(
-                        "Tahir Uzelli - 22 Yaşında",
-                        style: TextStyle(
+                      Text(
+                        user.name! +
+                            " - " +
+                            (DateTime.now().year -
+                                    DateTime.parse(user.birthday ?? "").year)
+                                .toString() +
+                            " Yaşında",
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
@@ -176,13 +201,13 @@ class FortunerLiveController extends GetxController {
                   ),
                 ),
               ),
-              DetailLine("Cinsiyet", "Erkek"),
-              DetailLine("İlişki Durumu", "Karışık"),
-              DetailLine("Medeni Durum", "Bekar"),
-              DetailLine("Burç", "Yay"),
-              DetailLine("Ay Burcu", "Terazi"),
-              DetailLine("Yükselen", "Aslan"),
-              DetailLine("Meslek", "Bilgisayar Mühendisi"),
+              DetailLine("Cinsiyet", user.gender ?? ""),
+              // DetailLine("İlişki Durumu", "Karışık"),
+              // DetailLine("Medeni Durum", "Bekar"),
+              DetailLine("Burç", user.zodiac ?? ""),
+              // DetailLine("Ay Burcu", "Terazi"),
+              // DetailLine("Yükselen", "Aslan"),
+              // DetailLine("Meslek", "Bilgisayar Mühendisi"),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -219,7 +244,7 @@ class FortunerLiveController extends GetxController {
                         padding: MaterialStateProperty.all(
                             const EdgeInsets.symmetric(vertical: 15)),
                       ),
-                      onPressed: () => acceptMeet(conversation),
+                      onPressed: () => acceptMeet(conversation, uid),
                       child: const Text(
                         "Kabul Et",
                         style: TextStyle(

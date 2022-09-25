@@ -15,6 +15,7 @@ class Conversation {
   String? sCreatedate;
   String? sUpdatedate;
   int? iV;
+  int? agoraTokenuid;
 
   Conversation(
       {this.sCreateuser,
@@ -32,7 +33,9 @@ class Conversation {
       this.sId,
       this.sCreatedate,
       this.sUpdatedate,
-      this.iV});
+      this.iV,
+      this.agoraTokenuid,
+      });
 
   Conversation.fromJson(Map<String, dynamic> json) {
     sCreateuser = json['_createuser'];
@@ -51,6 +54,7 @@ class Conversation {
     sCreatedate = json['_createdate'];
     sUpdatedate = json['_updatedate'];
     iV = json['__v'];
+    agoraTokenuid = json['agoraTokenUid'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +75,7 @@ class Conversation {
     data['_createdate'] = sCreatedate;
     data['_updatedate'] = sUpdatedate;
     data['__v'] = iV;
+    data['agoraTokenUid'] = agoraTokenuid;
     return data;
   }
 }

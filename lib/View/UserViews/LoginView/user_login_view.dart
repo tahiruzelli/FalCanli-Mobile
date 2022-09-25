@@ -127,7 +127,7 @@ class UserLoginView extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  userLoginController.isLoginLoading.value
+                  userLoginController.isFacebookLoginLoading.value
                       ? "Yükleniyor..."
                       : 'Facebook ile üye ol',
                   style: const TextStyle(

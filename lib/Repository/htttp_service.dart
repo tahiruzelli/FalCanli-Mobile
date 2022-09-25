@@ -56,7 +56,7 @@ class RestConnector {
       );
     } else if (requestType == RequestType.media) {
       Dio dio = Dio();
-      dio.options.headers["authorization"] = token;
+      dio.options.headers["authorization"] = "Bearer " + token;
       dio.options.headers['content-Type'] = 'multipart/form-data';
       response = await dio.post(
         url,
@@ -65,6 +65,7 @@ class RestConnector {
     } else if (requestType == RequestType.pathch) {
       response = await http.patch(
         Uri.parse(url),
+        body: data,
         headers: {
           'content-type': 'application/json',
           'Authorization': "Bearer " + token,

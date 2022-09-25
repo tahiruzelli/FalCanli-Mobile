@@ -1,8 +1,6 @@
-import 'package:falcanli/Controllers/UserControllers/user_main_controller.dart';
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Constans/enums.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
-import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:falcanli/View/UserViews/FortunersView/fortuner_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -105,7 +103,7 @@ class StatusSelectView extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         onPressed();
-        Get.to(FortunerListView());
+        Get.to(FortunerListView(fortunerController));
         if (title == "Kahve") {
           fortunerController.fortuneType = FortuneType.coffee;
         }

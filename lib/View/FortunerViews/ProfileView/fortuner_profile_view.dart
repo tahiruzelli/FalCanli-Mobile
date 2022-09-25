@@ -34,9 +34,9 @@ class FortunerProfileView extends StatelessWidget {
                         backgroundColor: mainColor,
                       ),
                       const SizedBox(height: 30),
-                      DetailLine("Adi", profileController.user?.name ?? ""),
+                      DetailLine("Adı", profileController.user?.name ?? ""),
                       DetailLine(
-                          "Dogum Tarihi",
+                          "Doğum Tarihi",
                           formatDateTime(DateTime.parse(
                               profileController.user?.birthday ?? ""))),
                       DetailLine("Burç", profileController.user?.zodiac ?? ""),

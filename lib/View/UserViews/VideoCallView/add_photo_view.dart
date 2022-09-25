@@ -2,6 +2,7 @@ import 'package:falcanli/Controllers/UserControllers/FortunerController/user_for
 import 'package:falcanli/Globals/Constans/colors.dart';
 import 'package:falcanli/Globals/Widgets/custom_appbar.dart';
 import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
+import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:falcanli/View/UserViews/FortunersView/Widgets/add_photo_area.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_instance/get_instance.dart';
@@ -16,12 +17,16 @@ class AddPhotoView extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           if (fortunerController.images.length == 3) {
-            // fortunerController.startVideoCall();
+            fortunerController.onGoLiveWithFortunerButtonPressed();
           } else {
             warningSnackBar("3 Adet fotoğraf seçiniz!");
           }
         },
-        label: const Text("Görüşmeye Başla"),
+        label: Obx(
+          () => fortunerController.isfortunerResponseWaiting.value
+              ? LoadingIndicator()
+              : const Text("Görüşmeye Başla"),
+        ),
         backgroundColor: mainColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

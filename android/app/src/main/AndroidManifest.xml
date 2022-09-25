@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"  />
+    <uses-permission android:name="android.permission.CAMERA"  />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"  />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"  />
+    <!-- The Agora SDK requires Bluetooth permissions in case users are using Bluetooth devices.-->
+    <uses-permission android:name="android.permission.BLUETOOTH"  />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>    
    <application
         android:label="falcanli"
@@ -52,12 +59,4 @@
         </intent-filter>
     </activity>
     </application>
-    <uses-permission  android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission  android:name="android.permission.INTERNET"  />
-    <uses-permission  android:name="android.permission.RECORD_AUDIO"  />
-    <uses-permission  android:name="android.permission.CAMERA"  />
-    <uses-permission  android:name="android.permission.MODIFY_AUDIO_SETTINGS"  />
-    <uses-permission  android:name="android.permission.ACCESS_NETWORK_STATE"  />
-    <!-- The Agora SDK requires Bluetooth permissions in case users are using Bluetooth devices.-->
-    <uses-permission  android:name="android.permission.BLUETOOTH"  />
 </manifest>

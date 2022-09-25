@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:falcanli/Globals/Widgets/custom_snackbar.dart';
+import 'package:falcanli/Repository/User/FortunerRepository/fortuner_repository.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:agora_rtc_engine/rtc_engine.dart';
@@ -10,9 +11,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import '../../../Globals/Constans/enums.dart';
+import '../../../Globals/Widgets/custom_appbar.dart';
 import '../../../Globals/Widgets/loading_indicator.dart';
 
-const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
+const String appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
 String token =
     "007eJxTYFi8XPFmd9hzMQGLGzK/w5cumGqnfjjhtWjNr+xE9SOzl5YpMJgkJVukpCSnGaammJuYWqZYmFgYJSelJRqbWaakpVpYbL2gkGyipJRcx6PLwsgAgSA+L0NiUWJSol5xallKYnEmAwMAuW4jcA==";
 String channel = "araba.sevdasi";
@@ -22,11 +24,13 @@ class FortunerVideoCallView extends StatefulWidget {
   String token;
   String conversationId;
   FortuneType fortuneType;
+  int uid;
   FortunerVideoCallView({
     required this.channelId,
     required this.token,
     required this.conversationId,
     required this.fortuneType,
+    required this.uid,
   });
   @override
   _MyAppState createState() => _MyAppState();
@@ -36,15 +40,12 @@ class _MyAppState extends State<FortunerVideoCallView> {
   int? _remoteUid;
   bool _localUserJoined = false;
   late RtcEngine _engine;
+  final _infoStrings = <String>[];
 
   late IO.Socket meetSocket;
   bool showToolBar = true;
 
-  List<String> imageLinks = [
-    "https://i2.milimaj.com/i/milliyet/75/0x410/5c8d168007291c1d740169dc.jpg",
-    "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
-    "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
-  ];
+  List<String> imageLinks = [];
 
   bool muted = false;
 
@@ -54,7 +55,8 @@ class _MyAppState extends State<FortunerVideoCallView> {
     token = widget.token;
     channel = widget.channelId;
     openSocket();
-    initAgora();
+    // initAgora();
+    initialize();
   }
 
   void openSocket() {
@@ -65,19 +67,52 @@ class _MyAppState extends State<FortunerVideoCallView> {
       meetSocket.emit("conversationId", {"data": widget.conversationId});
     });
     meetSocket.on("returnData", (data) {
-      if (data['haveCall'] == false) {
+      if (data['goingCall'] == false) {
         warningSnackBar("Görüşme sonlandırılmıştır");
+        // _onCallEnd(context);
+      } else if (widget.fortuneType == FortuneType.coffee) {
+        if (data['photo1'] != "") {
+          imageLinks.add(data['photo1']);
+        }
+        if (data['photo2'] != "") {
+          imageLinks.add(data['photo2']);
+        }
+        if (data['photo3'] != "") {
+          imageLinks.add(data['photo3']);
+        }
       }
     });
   }
 
-  Future<void> initAgora() async {
-    // retrieve permissions
-    await [Permission.microphone, Permission.camera].request();
+  Future<void> initialize() async {
+    if (appId.isEmpty) {
+      setState(() {
+        _infoStrings.add(
+          'APP_ID missing, please provide your APP_ID in settings.dart',
+        );
+        _infoStrings.add('Agora Engine is not starting');
+      });
+      return;
+    }
 
-    //create the engine
+    await _initAgoraRtcEngine();
+    _addAgoraEventHandlers();
+    await _engine.enableWebSdkInteroperability(true);
+    VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
+    configuration.dimensions = const VideoDimensions(width: 1920, height: 1080);
+    await _engine.setVideoEncoderConfiguration(configuration);
+    await _engine.joinChannel(token, channel, null, widget.uid);
+  }
+
+  /// Create agora sdk instance and initialize
+  Future<void> _initAgoraRtcEngine() async {
     _engine = await RtcEngine.create(appId);
     await _engine.enableVideo();
+    await _engine.setChannelProfile(ChannelProfile.Communication);
+  }
+
+  /// Add agora event handlers
+  void _addAgoraEventHandlers() {
     _engine.setEventHandler(
       RtcEngineEventHandler(
         joinChannelSuccess: (String channel, int uid, int elapsed) {
@@ -100,17 +135,85 @@ class _MyAppState extends State<FortunerVideoCallView> {
         },
       ),
     );
+    // _engine.setEventHandler(RtcEngineEventHandler(error: (code) {
+    //   setState(() {
+    //     final info = 'onError: $code';
+    //     _infoStrings.add(info);
+    //   });
+    // }, joinChannelSuccess: (channel, uid, elapsed) {
+    //   setState(() {
+    //     final info = 'onJoinChannel: $channel, uid: $uid';
+    //     _infoStrings.add(info);
+    //   });
+    // }, leaveChannel: (stats) {
+    //   setState(() {
+    //     _infoStrings.add('onLeaveChannel');
+    //     _users.clear();
+    //   });
+    // }, userJoined: (uid, elapsed) {
+    //   setState(() {
+    //     final info = 'userJoined: $uid';
+    //     _infoStrings.add(info);
+    //     _users.add(uid);
+    //   });
+    // }, userOffline: (uid, elapsed) {
+    //   setState(() {
+    //     final info = 'userOffline: $uid';
+    //     _infoStrings.add(info);
+    //     _users.remove(uid);
+    //   });
+    // }, firstRemoteVideoFrame: (uid, width, height, elapsed) {
+    //   setState(() {
+    //     final info = 'firstRemoteVideo: $uid ${width}x $height';
+    //     _infoStrings.add(info);
+    //   });
+    // }));
+  }
 
-    await _engine.joinChannel(token, channel, null, 0);
+  Future<void> initAgora() async {
+    // retrieve permissions
+    await [Permission.microphone, Permission.camera].request();
+
+    //create the engine
+    _engine = await RtcEngine.create(appId);
+    // RtcEngineContext context = RtcEngineContext(appId);
+    // _engine = await RtcEngine.createWithContext(context);
+
+    // await _engine.setChannelProfile(ChannelProfile.Communication);
+    // await _engine.setClientRole(ClientRole.Broadcaster);
+    _engine.setEventHandler(
+      RtcEngineEventHandler(
+        joinChannelSuccess: (String channel, int uid, int elapsed) {
+          print("local user $uid joined");
+          setState(() {
+            _localUserJoined = true;
+          });
+        },
+        userJoined: (int uid, int elapsed) {
+          print("remote user $uid joined");
+          setState(() {
+            _remoteUid = uid;
+          });
+        },
+        userOffline: (int uid, UserOfflineReason reason) {
+          print("remote user $uid left channel");
+          setState(() {
+            _remoteUid = null;
+          });
+        },
+      ),
+    );
+    await _engine.enableVideo();
+    await _engine.joinChannel(token, channel, null, widget.uid).then((value) {
+      print("fortuner joined channel ");
+    });
   }
 
   // Create UI with local view and remote view
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tahir Uzelli'),
-      ),
+      appBar: customAppBar(title: "Araba Sevdasi"),
       body: Stack(
         children: [
           GestureDetector(
@@ -268,8 +371,11 @@ class _MyAppState extends State<FortunerVideoCallView> {
   }
 
   void _onCallEnd(BuildContext context) {
-    _engine.leaveChannel();
-    // liveVideoController.meetSocket.close();
+    // _engine.leaveChannel();
+    _engine.destroy();
+    //conversation patch görüşme tamamlandı
+    // FortunerRepository fortunerRepository = FortunerRepository();
+    // fortunerRepository.endConversation(widget.conversationId);
     meetSocket.close();
     Get.back();
   }
@@ -285,114 +391,3 @@ class _MyAppState extends State<FortunerVideoCallView> {
     _engine.switchCamera();
   }
 }
-
-
-// import 'dart:async';
-
-// import 'package:agora_rtc_engine/rtc_engine.dart';
-// import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
-// import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-// import 'package:flutter/material.dart';
-// import 'package:permission_handler/permission_handler.dart';
-
-// const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
-// const token =
-//     "0064bc8ddcf1ed7459d8482cbfa369dfe88IABSVSMrmk81a0l5vB/C6Ai1DPBSJhOz4vFXN1qxXQecUQYf3+6379yDEACEsEmklB0iYwEAAQAk2iBj";
-// const channel = "araba.sevdasi";
-
-// class FortunerVideoCallView extends StatefulWidget {
-//   String channelId;
-//   String token;
-//   FortunerVideoCallView({required this.channelId, required this.token});
-//   @override
-//   _MyAppState createState() => _MyAppState();
-// }
-
-// class _MyAppState extends State<FortunerVideoCallView> {
-//   int? _remoteUid;
-//   bool _localUserJoined = false;
-//   late RtcEngine _engine;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     initAgora();
-//   }
-
-//   Future<void> initAgora() async {
-//     // retrieve permissions
-//     await [Permission.microphone, Permission.camera].request();
-
-//     //create the engine
-//     _engine = await RtcEngine.create(appId);
-//     await _engine.enableVideo();
-//     _engine.setEventHandler(
-//       RtcEngineEventHandler(
-//         joinChannelSuccess: (String channel, int uid, int elapsed) {
-//           print("local user $uid joined");
-//           setState(() {
-//             _localUserJoined = true;
-//           });
-//         },
-//         userJoined: (int uid, int elapsed) {
-//           print("remote user $uid joined");
-//           setState(() {
-//             _remoteUid = uid;
-//           });
-//         },
-//         userOffline: (int uid, UserOfflineReason reason) {
-//           print("remote user $uid left channel");
-//           setState(() {
-//             _remoteUid = null;
-//           });
-//         },
-//       ),
-//     );
-
-//     await _engine.joinChannel(token, channel, null, 0);
-//   }
-
-//   // Create UI with local view and remote view
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Agora Video Call'),
-//       ),
-//       body: Stack(
-//         children: [
-//           Center(
-//             child: _remoteVideo(),
-//           ),
-//           Align(
-//             alignment: Alignment.topLeft,
-//             child: Container(
-//               width: 100,
-//               height: 150,
-//               child: Center(
-//                 child: _localUserJoined
-//                     ? RtcLocalView.SurfaceView()
-//                     : CircularProgressIndicator(),
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   // Display remote user's video
-//   Widget _remoteVideo() {
-//     if (_remoteUid != null) {
-//       return RtcRemoteView.SurfaceView(
-//         uid: _remoteUid!,
-//         channelId: channel,
-//       );
-//     } else {
-//       return Text(
-//         'Please wait for remote user to join',
-//         textAlign: TextAlign.center,
-//       );
-//     }
-//   }
-// }

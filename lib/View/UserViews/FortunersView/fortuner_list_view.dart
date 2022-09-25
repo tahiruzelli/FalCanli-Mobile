@@ -5,19 +5,21 @@ import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
-
 import 'Widgets/fortuner_card.dart';
 
 class FortunerListView extends StatelessWidget {
-  UserFortunerController fortunerController = Get.put(UserFortunerController());
+  UserFortunerController fortunerController;
+  FortunerListView(this.fortunerController, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     fortunerController.getFortunerList();
     return RefreshIndicator(
       onRefresh: () => fortunerController.getFortunerList(),
       child: Scaffold(
-        appBar: customAppBar(title: getFortuneTypeString(fortunerController.fortuneType!) + " falı"),
+        appBar: customAppBar(
+            title: getFortuneTypeString(fortunerController.fortuneType!) +
+                " falı"),
         body: Stack(
           children: [
             GradiendContainer(),

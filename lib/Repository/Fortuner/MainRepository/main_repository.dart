@@ -17,6 +17,7 @@ abstract class IFortunerMainRepository {
     required String userId,
     required String conversationId,
   });
+  Future getFortunerDataWithUserId(String id);
 }
 
 class FortunerMainRepository implements IFortunerMainRepository {
@@ -47,9 +48,7 @@ class FortunerMainRepository implements IFortunerMainRepository {
     required String conversationId,
   }) async {
     Map body = {
-      "fortuneTellerId": fortunerId,
-      "userid": userId,
-      "status": "kabul edildi",
+      "status": "görüşmede",
     };
     var jsonBody = const JsonEncoder().convert(body);
     var response = await RestConnector(
@@ -78,6 +77,17 @@ class FortunerMainRepository implements IFortunerMainRepository {
       jwtToken!,
       data: jsonBody,
       requestType: RequestType.pathch,
+    ).getData();
+    return response;
+  }
+
+  @override
+  Future getFortunerDataWithUserId(String id) async {
+    var response = await RestConnector(
+      baseUrl + "fortune-teller/getFortuneTellerWithUserId/" + id,
+      jwtToken!,
+      data: "",
+      requestType: RequestType.get,
     ).getData();
     return response;
   }

@@ -8,7 +8,9 @@ import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:falcanli/Models/fortuner.dart';
+import 'package:falcanli/View/UserViews/FortunersView/Widgets/add_photo_area.dart';
 import 'package:falcanli/View/UserViews/FortunersView/comments_view.dart';
+import 'package:falcanli/View/UserViews/VideoCallView/add_photo_view.dart';
 import 'package:falcanli/View/UserViews/VideoCallView/video_call_view.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,9 @@ class FortunerDetailView extends StatelessWidget {
       appBar: customAppBar(
           title: fortunerController.currentFortuner?.nickname ?? "Falcı"),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => fortunerController.onGoLiveWithFortunerButtonPressed(),
+        onPressed: () => fortunerController.fortuneType == FortuneType.coffee
+            ? Get.to(AddPhotoView())
+            : fortunerController.onGoLiveWithFortunerButtonPressed(),
         label: Obx(
           () => fortunerController.isfortunerResponseWaiting.value
               ? Center(
