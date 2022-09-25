@@ -86,11 +86,14 @@ class FortunerDetailView extends StatelessWidget {
                       child: SizedBox(
                         height: Get.height * 0.2,
                         width: Get.width * 0.15,
-                        child: Image.asset(
-                          "assets/images/${avaibleStatus == 0 ? "trafficGreen" : avaibleStatus == 1 ? "trafficYellow" : "trafficRed"}.png",
-                          fit: BoxFit.cover,
-                          height: Get.height * 0.2,
-                          width: Get.width * 0.15,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            "assets/images/${avaibleStatus == 0 ? "trafficGreen" : avaibleStatus == 1 ? "trafficYellow" : "trafficRed"}.png",
+                            fit: BoxFit.cover,
+                            height: Get.height * 0.2,
+                            width: Get.width * 0.15,
+                          ),
                         ),
                       ),
                     ),

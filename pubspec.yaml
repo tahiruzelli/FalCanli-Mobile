@@ -61,6 +61,7 @@ dependencies:
   jwt_decode: ^0.3.1
   syncfusion_flutter_pdfviewer: ^20.2.45-beta
   uri_to_file: ^0.2.0
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,11 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 flutter:
 
   # The following line ensures that the Material Icons font is

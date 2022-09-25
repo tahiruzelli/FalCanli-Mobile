@@ -1,3 +1,5 @@
+import 'package:falcanli/Repository/User/FortunerRepository/fortuner_repository.dart';
+import 'package:falcanli/Repository/User/ProfileRepository/user_profile_repository.dart';
 import 'package:falcanli/View/UserViews/FortunersView/status_select_view.dart';
 import 'package:falcanli/View/UserViews/GetCreditView/get_credit_view.dart';
 import 'package:falcanli/View/UserViews/ProfileView/user_profile_view.dart';

@@ -30,6 +30,7 @@ class UserVideoCallView extends StatefulWidget {
   int uid;
   FortuneType fortuneType;
   UserFortunerController userFortunerController;
+  List<String> images;
   UserVideoCallView({
     Key? key,
     required this.channelId,
@@ -38,6 +39,7 @@ class UserVideoCallView extends StatefulWidget {
     required this.fortuneType,
     required this.uid,
     required this.userFortunerController,
+    required this.images,
   }) : super(key: key);
   @override
   _MyAppState createState() => _MyAppState();
@@ -60,6 +62,9 @@ class _MyAppState extends State<UserVideoCallView> {
     userFortunerController = widget.userFortunerController;
     token = widget.token;
     channel = widget.channelId;
+    if (widget.fortuneType == FortuneType.coffee) {
+      imageLinks = widget.images;
+    }
     openSocket();
     // initAgora();
     initialize(channel: channel, token: token, uid: widget.uid);
@@ -90,6 +95,7 @@ class _MyAppState extends State<UserVideoCallView> {
         uid: conversation.agoraTokenuid!,
         fortuneType: widget.fortuneType,
         userFortunerController: widget.userFortunerController,
+        images: imageLinks,
       ));
     }
   }
@@ -99,16 +105,6 @@ class _MyAppState extends State<UserVideoCallView> {
       if (data['goingCall'] == false) {
         _onCallEnd(context);
         warningSnackBar("Görüşme sonlandırılmıştır");
-      } else if (widget.fortuneType == FortuneType.coffee) {
-        if (data['photo1'] != "") {
-          imageLinks.add(data['photo1']);
-        }
-        if (data['photo2'] != "") {
-          imageLinks.add(data['photo2']);
-        }
-        if (data['photo3'] != "") {
-          imageLinks.add(data['photo3']);
-        }
       }
     });
   }
@@ -233,7 +229,13 @@ class _MyAppState extends State<UserVideoCallView> {
             ),
           ),
           Center(
-            child: _remoteVideo(),
+            child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showToolBar = !showToolBar;
+                  });
+                },
+                child: _remoteVideo()),
           ),
           Align(
             alignment: Alignment.topLeft,
@@ -395,4 +397,3 @@ class _MyAppState extends State<UserVideoCallView> {
     _engine.switchCamera();
   }
 }
-

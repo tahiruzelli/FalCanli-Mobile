@@ -72,13 +72,13 @@ class _MyAppState extends State<FortunerVideoCallView> {
         // _onCallEnd(context);
       } else if (widget.fortuneType == FortuneType.coffee) {
         if (data['photo1'] != "") {
-          imageLinks.add(data['photo1']);
+          imageLinks.add(data["detail"]['photo1']);
         }
         if (data['photo2'] != "") {
-          imageLinks.add(data['photo2']);
+          imageLinks.add(data["detail"]['photo2']);
         }
         if (data['photo3'] != "") {
-          imageLinks.add(data['photo3']);
+          imageLinks.add(data["detail"]['photo3']);
         }
       }
     });
@@ -230,7 +230,13 @@ class _MyAppState extends State<FortunerVideoCallView> {
             ),
           ),
           Center(
-            child: _remoteVideo(),
+            child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showToolBar = !showToolBar;
+                  });
+                },
+                child: _remoteVideo()),
           ),
           Align(
             alignment: Alignment.topLeft,

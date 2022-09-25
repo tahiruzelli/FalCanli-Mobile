@@ -29,6 +29,7 @@ class UserMainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     userProfileController.getUserDatas();
+    userProfileController.getUserCredit();
     return AdvancedDrawer(
       backdropColor: mainColor,
       controller: _advancedDrawerController,
@@ -113,16 +114,38 @@ class UserMainView extends StatelessWidget {
                     },
                     icon: const Icon(Icons.settings),
                   )
-                : TextButton(
-                    onPressed: () {
-                      userMainController.changePage(1);
-                    },
-                    child: const Text(
-                      "Kredi Al",
-                      style: TextStyle(
-                        color: Colors.green,
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Obx(
+                        () =>
+                            userProfileController.isRemainingCreditLoading.value
+                                ? Container()
+                                : Row(
+                                    children: [
+                                      Image.asset(
+                                        "assets/icons/coinIcon.png",
+                                        height: 20,
+                                        width: 30,
+                                      ),
+                                      Text(userProfileController
+                                          .remainingCredit.value
+                                          .toString()),
+                                    ],
+                                  ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () {
+                          userMainController.changePage(1);
+                        },
+                        child: const Text(
+                          "Kredi Al",
+                          style: TextStyle(
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
           ),
           body: userMainController.getBodyPages,

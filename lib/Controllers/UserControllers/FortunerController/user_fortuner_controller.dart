@@ -203,13 +203,17 @@ class UserFortunerController extends GetxController {
                   fortuneTellerId: currentFortuner?.sId ?? "",
                 );
                 Get.to(UserVideoCallView(
-                  token: firstSocketData['detail']["agoraToken"],
-                  channelId: currentFortuner?.channelId ?? "",
-                  conversationId: conversation.sId ?? "",
-                  uid: firstSocketData['detail']['agoraTokenUid'] ?? 1,
-                  fortuneType: fortuneType!,
-                  userFortunerController: this,
-                ));
+                    token: firstSocketData['detail']["agoraToken"],
+                    channelId: currentFortuner?.channelId ?? "",
+                    conversationId: conversation.sId ?? "",
+                    uid: firstSocketData['detail']['agoraTokenUid'] ?? 1,
+                    fortuneType: fortuneType!,
+                    userFortunerController: this,
+                    images: [
+                      data['detail']['photo1'],
+                      data['detail']['photo2'],
+                      data['detail']['photo3'],
+                    ]));
               }
             });
           }
