@@ -21,6 +21,7 @@ const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
 String token =
     "0064bc8ddcf1ed7459d8482cbfa369dfe88IAAxR+++zpKQv4pbKpBdxoYQn8eN1Aq838e8paTAqlNYAwYf3+6379yDEACEsEmk13grYwEAAQBnNSpj";
 String channel = "channelName";
+String conversationId = "";
 
 class UserVideoCallView extends StatefulWidget {
   String channelId;
@@ -49,11 +50,7 @@ class _MyAppState extends State<UserVideoCallView> {
   bool showToolBar = true;
   late UserFortunerController userFortunerController;
   final _infoStrings = <String>[];
-  List<String> imageLinks = [
-    "https://i2.milimaj.com/i/milliyet/75/0x410/5c8d168007291c1d740169dc.jpg",
-    "https://yt3.ggpht.com/ZKE70cnZjPSLsmojxPB7dZc5g4a2Kc9xRcgflx4LqYSidvLrhL0vj3UShAKqaT1K9WoI79_o=s900-c-k-c0x00ffffff-no-rj",
-    "https://www.medyumbestamihoca.com/wp-content/uploads/2020/05/kahve-fali.jpeg",
-  ];
+  List<String> imageLinks = [];
 
   bool muted = false;
 
@@ -63,10 +60,10 @@ class _MyAppState extends State<UserVideoCallView> {
     userFortunerController = widget.userFortunerController;
     token = widget.token;
     channel = widget.channelId;
-    // openSocket();
+    openSocket();
     // initAgora();
     initialize(channel: channel, token: token, uid: widget.uid);
-    Timer(const Duration(seconds: 10), () {
+    Timer(const Duration(seconds: 5), () {
       if (shouldReInitVideo) {
         reinitAgora();
       }
@@ -84,8 +81,6 @@ class _MyAppState extends State<UserVideoCallView> {
 
     if (isHttpOK(result['statusCode'])) {
       Conversation conversation = Conversation.fromJson(result['result']);
-      print(
-          "test started\ntest started\ntest started\ntest started\ntest started\ntest started\ntest started\ntest started\ntest started\ntest started\ntest started\n");
       _engine.destroy();
       Get.back();
       Get.to(UserVideoCallView(
@@ -102,7 +97,18 @@ class _MyAppState extends State<UserVideoCallView> {
   void openSocket() {
     userFortunerController.meetSocket.on("returnData", (data) {
       if (data['goingCall'] == false) {
+        _onCallEnd(context);
         warningSnackBar("Görüşme sonlandırılmıştır");
+      } else if (widget.fortuneType == FortuneType.coffee) {
+        if (data['photo1'] != "") {
+          imageLinks.add(data['photo1']);
+        }
+        if (data['photo2'] != "") {
+          imageLinks.add(data['photo2']);
+        }
+        if (data['photo3'] != "") {
+          imageLinks.add(data['photo3']);
+        }
       }
     });
   }
@@ -111,6 +117,7 @@ class _MyAppState extends State<UserVideoCallView> {
       {required String token,
       required String channel,
       required int uid}) async {
+    conversationId = widget.conversationId;
     if (appId.isEmpty) {
       setState(() {
         _infoStrings.add(
@@ -157,6 +164,7 @@ class _MyAppState extends State<UserVideoCallView> {
           print("remote user $uid left channel");
           setState(() {
             _remoteUid = null;
+            _onCallEnd(context);
           });
         },
       ),
@@ -368,11 +376,11 @@ class _MyAppState extends State<UserVideoCallView> {
 
   void _onCallEnd(BuildContext context) {
     // _engine.leaveChannel();
-    _engine.destroy();
+    _engine.leaveChannel();
     shouldReInitVideo = true;
-    // liveVideoController.meetSocket.close();
+    userFortunerController.meetSocket.close();
     //conversation patch görüşme tamamlandı
-    // userFortunerController.meetSocket.close();
+    FortunerRepository().endConversation(conversationId);
     Get.back();
   }
 
@@ -387,3 +395,4 @@ class _MyAppState extends State<UserVideoCallView> {
     _engine.switchCamera();
   }
 }
+

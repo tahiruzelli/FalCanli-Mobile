@@ -176,13 +176,16 @@ class UserFortunerController extends GetxController {
           warningSnackBar(
               "Falcı gerekli sürede cevap vermedi, isteğiniz kapanmıştır. Daha sonra tekrar deneyiniz");
         });
-
+        socket.close();
+        socket = IO.io(
+            'https://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+            OptionBuilder().setTransports(['websocket']).build());
         socket.emit('fortuneTellerId', {"data": conversation.fortuneTellerId});
         socket.on('returnData', (data) {
           print(data);
           var firstSocketData = data;
           if (data['haveCall']) {
-            socket.close();
+            meetSocket.close();
             meetSocket = IO.io(
                 'https://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
                 OptionBuilder().setTransports(['websocket']).build());
@@ -193,6 +196,7 @@ class UserFortunerController extends GetxController {
               if (data['goingCall']) {
                 print("go to call");
                 shouldReInitVideo = true;
+                isfortunerResponseWaiting.value = false;
                 UserCreditRepository().spendCredit(
                   amount: currentAmount ?? 0,
                   userId: userId,
@@ -220,6 +224,9 @@ class UserFortunerController extends GetxController {
   void onInit() {
     fortuneType = FortuneType.coffee;
     socket = IO.io(
+        'https://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
+        OptionBuilder().setTransports(['websocket']).build());
+    meetSocket = IO.io(
         'https://test1.p6p9p21gckjvc.eu-central-1.cs.amazonlightsail.com/',
         OptionBuilder().setTransports(['websocket']).build());
     super.onInit();

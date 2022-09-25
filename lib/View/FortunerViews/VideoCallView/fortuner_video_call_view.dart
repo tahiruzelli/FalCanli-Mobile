@@ -131,6 +131,7 @@ class _MyAppState extends State<FortunerVideoCallView> {
           print("remote user $uid left channel");
           setState(() {
             _remoteUid = null;
+            _onCallEnd(context);
           });
         },
       ),
@@ -372,10 +373,12 @@ class _MyAppState extends State<FortunerVideoCallView> {
 
   void _onCallEnd(BuildContext context) {
     // _engine.leaveChannel();
-    _engine.destroy();
-    //conversation patch görüşme tamamlandı
-    // FortunerRepository fortunerRepository = FortunerRepository();
-    // fortunerRepository.endConversation(widget.conversationId);
+    _engine.leaveChannel();
+    FortunerRepository fortunerRepository = FortunerRepository();
+    fortunerRepository.endConversation(widget.conversationId).then((value) {
+      print(value);
+      print(widget.conversationId);
+    });
     meetSocket.close();
     Get.back();
   }

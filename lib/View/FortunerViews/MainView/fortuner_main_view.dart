@@ -11,6 +11,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../Globals/Constans/colors.dart';
+import '../../GlobalViews/pdf_view.dart';
 
 class FortunerMainView extends StatelessWidget {
   final _advancedDrawerController = AdvancedDrawerController();
@@ -60,14 +61,20 @@ class FortunerMainView extends StatelessWidget {
                 title: const Text("S.S.S."),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () => Get.to(PdfView(
+                  path: "assets/pdfs/kk.pdf",
+                  title: "Kullanım Koşulları",
+                )),
                 leading: const Icon(Icons.rule),
-                title: const Text("Kurallar"),
+                title: const Text("Kullanım Koşulları"),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () => Get.to(PdfView(
+                  path: "assets/pdfs/kvkk.pdf",
+                  title: "KVKK",
+                )),
                 leading: const Icon(Icons.rule),
-                title: const Text("bla bla"),
+                title: const Text("KVKK"),
               ),
               const Spacer(),
               ListTile(
@@ -95,14 +102,6 @@ class FortunerMainView extends StatelessWidget {
           appBar: customAppBar(
             advancedDrawerController: _advancedDrawerController,
             title: userMainController.getAppBarTitle(),
-            action: userMainController.currentPageIndex.value == 2
-                ? IconButton(
-                    onPressed: () {
-                      Get.to(CompleteProfileView());
-                    },
-                    icon: const Icon(Icons.settings),
-                  )
-                : null,
           ),
           body: userMainController.getBodyPages,
           bottomNavigationBar: BottomNavigationBar(
