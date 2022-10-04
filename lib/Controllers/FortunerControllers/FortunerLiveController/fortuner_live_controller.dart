@@ -19,6 +19,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../../View/FortunerViews/VideoCallView/fortuner_video_call_view.dart';
+import '../../../View/UserViews/VideoCallView/test_call.dart';
 
 class FortunerLiveController extends GetxController {
   FortunerMainRepository mainRepository = FortunerMainRepository();
@@ -125,19 +126,20 @@ class FortunerLiveController extends GetxController {
           await mainRepository.getFortunerDataWithUserId(fortunerId);
       if (isHttpOK(fortunerDataResult['statusCode'])) {
         Fortuner fortuner = Fortuner.fromJson(fortunerDataResult['result']);
-        Get.to(FortunerVideoCallView(
-          channelId: fortuner.channelId ?? "",
-          token: conversation.agoraToken ?? "",
-          conversationId: conversation.sId ?? "",
-          fortuneType: conversation.conversationType! == "tarot"
-              ? FortuneType.tarot
-              : conversation.conversationType! == "kahve"
-                  ? FortuneType.coffee
-                  : conversation.conversationType! == "astroloji"
-                      ? FortuneType.astrology
-                      : FortuneType.natalChart,
-          uid: uid,
-        ));
+        // Get.to(FortunerVideoCallView(
+        //   channelId: fortuner.channelId ?? "",
+        //   token: conversation.agoraToken ?? "",
+        //   conversationId: conversation.sId ?? "",
+        //   fortuneType: conversation.conversationType! == "tarot"
+        //       ? FortuneType.tarot
+        //       : conversation.conversationType! == "kahve"
+        //           ? FortuneType.coffee
+        //           : conversation.conversationType! == "astroloji"
+        //               ? FortuneType.astrology
+        //               : FortuneType.natalChart,
+        //   uid: uid,
+        // ));
+        Get.to(TestCall());
       } else {
         warningSnackBar("Bir sorun olustu daha sonra tekrar deneyin");
       }

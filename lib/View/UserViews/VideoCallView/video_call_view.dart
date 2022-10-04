@@ -18,9 +18,6 @@ import '../../../Globals/Constans/enums.dart';
 import '../../../Globals/Widgets/loading_indicator.dart';
 
 const appId = "4bc8ddcf1ed7459d8482cbfa369dfe88";
-String token =
-    "0064bc8ddcf1ed7459d8482cbfa369dfe88IAAxR+++zpKQv4pbKpBdxoYQn8eN1Aq838e8paTAqlNYAwYf3+6379yDEACEsEmk13grYwEAAQBnNSpj";
-String channel = "channelName";
 String conversationId = "";
 
 class UserVideoCallView extends StatefulWidget {
@@ -60,19 +57,18 @@ class _MyAppState extends State<UserVideoCallView> {
   void initState() {
     super.initState();
     userFortunerController = widget.userFortunerController;
-    token = widget.token;
-    channel = widget.channelId;
     if (widget.fortuneType == FortuneType.coffee) {
       imageLinks = widget.images;
     }
     openSocket();
     // initAgora();
-    initialize(channel: channel, token: token, uid: widget.uid);
-    Timer(const Duration(seconds: 5), () {
-      if (shouldReInitVideo) {
-        reinitAgora();
-      }
-    });
+    // initialize(channel: widget.channelId, token: "token", uid: widget.uid);
+    initAgora();
+    // Timer(const Duration(seconds: 10), () {
+    //   if (shouldReInitVideo) {
+    //     reinitAgora();
+    //   }
+    // });
   }
 
   void reinitAgora() async {
@@ -90,7 +86,7 @@ class _MyAppState extends State<UserVideoCallView> {
       Get.back();
       Get.to(UserVideoCallView(
         token: conversation.agoraToken!,
-        channelId: channel,
+        channelId: widget.channelId,
         conversationId: conversation.sId ?? "",
         uid: conversation.agoraTokenuid!,
         fortuneType: widget.fortuneType,
@@ -130,7 +126,7 @@ class _MyAppState extends State<UserVideoCallView> {
     VideoEncoderConfiguration configuration = VideoEncoderConfiguration();
     configuration.dimensions = const VideoDimensions(width: 1920, height: 1080);
     await _engine.setVideoEncoderConfiguration(configuration);
-    await _engine.joinChannel(token, channel, null, uid);
+    await _engine.joinChannel(null, channel, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -194,17 +190,13 @@ class _MyAppState extends State<UserVideoCallView> {
           print("remote user $uid left channel");
           setState(() {
             _remoteUid = null;
+            _onCallEnd(context);
           });
         },
       ),
     );
-    print("init agora");
-    print(token);
-    print(channel);
-    print(widget.uid);
-    print(appId);
     await _engine.enableVideo();
-    await _engine.joinChannel(token, channel, null, widget.uid).then((value) {
+    await _engine.joinChannel(null, widget.channelId, null, 0).then((value) {
       print("user joined channel");
     });
   }
@@ -366,7 +358,7 @@ class _MyAppState extends State<UserVideoCallView> {
     if (_remoteUid != null) {
       return RtcRemoteView.SurfaceView(
         uid: _remoteUid!,
-        channelId: channel,
+        channelId: widget.channelId,
       );
     } else {
       return const Text(

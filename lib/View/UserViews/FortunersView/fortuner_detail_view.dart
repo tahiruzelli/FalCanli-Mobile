@@ -8,13 +8,13 @@ import 'package:falcanli/Globals/Widgets/detail_line.dart';
 import 'package:falcanli/Globals/Widgets/gradiend_container.dart';
 import 'package:falcanli/Globals/Widgets/loading_indicator.dart';
 import 'package:falcanli/Models/fortuner.dart';
-import 'package:falcanli/View/UserViews/FortunersView/Widgets/add_photo_area.dart';
 import 'package:falcanli/View/UserViews/FortunersView/comments_view.dart';
 import 'package:falcanli/View/UserViews/VideoCallView/add_photo_view.dart';
-import 'package:falcanli/View/UserViews/VideoCallView/video_call_view.dart';
 import 'package:ff_stars/ff_stars.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../VideoCallView/test_call.dart';
 
 class FortunerDetailView extends StatelessWidget {
   late UserFortunerController fortunerController;

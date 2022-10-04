@@ -10,6 +10,7 @@ import 'package:falcanli/Repository/User/CreditRepository/user_credit_repository
 import 'package:falcanli/Repository/User/FortunerRepository/fortuner_repository.dart';
 import 'package:falcanli/Repository/User/ProfileRepository/user_profile_repository.dart';
 import 'package:falcanli/View/UserViews/FortunersView/fortuner_detail_view.dart';
+import 'package:falcanli/View/UserViews/VideoCallView/test_call.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -202,18 +203,18 @@ class UserFortunerController extends GetxController {
                   userId: userId,
                   fortuneTellerId: currentFortuner?.sId ?? "",
                 );
-                Get.to(UserVideoCallView(
-                    token: firstSocketData['detail']["agoraToken"],
-                    channelId: currentFortuner?.channelId ?? "",
-                    conversationId: conversation.sId ?? "",
-                    uid: firstSocketData['detail']['agoraTokenUid'] ?? 1,
-                    fortuneType: fortuneType!,
-                    userFortunerController: this,
-                    images: [
-                      data['detail']['photo1'],
-                      data['detail']['photo2'],
-                      data['detail']['photo3'],
-                    ]));
+                // Get.to(UserVideoCallView(
+                //     token: firstSocketData['detail']["agoraToken"],
+                //     channelId: currentFortuner?.channelId ?? "",
+                //     conversationId: conversation.sId ?? "",
+                //     uid: firstSocketData['detail']['agoraTokenUid'] ?? 1,
+                //     fortuneType: fortuneType!,
+                //     userFortunerController: this,
+                //     images: [
+                //       data['detail']['photo1'],
+                //       data['detail']['photo2'],
+                //       data['detail']['photo3'],
+                //     ]));
               }
             });
           }

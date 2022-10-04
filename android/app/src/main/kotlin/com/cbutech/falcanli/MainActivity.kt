@@ -1,4 +1,4 @@
-package com.example.falcanli
+package com.cbutech.falcanli
 
 import io.flutter.embedding.android.FlutterActivity
 
