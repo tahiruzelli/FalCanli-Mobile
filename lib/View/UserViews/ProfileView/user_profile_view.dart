@@ -12,8 +12,6 @@ class UserProfileView extends StatelessWidget {
   UserProfileController profileController = Get.put(UserProfileController());
   @override
   Widget build(BuildContext context) {
-    profileController.getUserCredit();
-    // profileController.getUserDatas();
     return Scaffold(
       body: Stack(
         children: [

@@ -126,20 +126,19 @@ class FortunerLiveController extends GetxController {
           await mainRepository.getFortunerDataWithUserId(fortunerId);
       if (isHttpOK(fortunerDataResult['statusCode'])) {
         Fortuner fortuner = Fortuner.fromJson(fortunerDataResult['result']);
-        // Get.to(FortunerVideoCallView(
-        //   channelId: fortuner.channelId ?? "",
-        //   token: conversation.agoraToken ?? "",
-        //   conversationId: conversation.sId ?? "",
-        //   fortuneType: conversation.conversationType! == "tarot"
-        //       ? FortuneType.tarot
-        //       : conversation.conversationType! == "kahve"
-        //           ? FortuneType.coffee
-        //           : conversation.conversationType! == "astroloji"
-        //               ? FortuneType.astrology
-        //               : FortuneType.natalChart,
-        //   uid: uid,
-        // ));
-        Get.to(TestCall());
+        Get.to(FortunerVideoCallView(
+          channelId: fortuner.channelId ?? "",
+          token: conversation.agoraToken ?? "",
+          conversationId: conversation.sId ?? "",
+          fortuneType: conversation.conversationType! == "tarot"
+              ? FortuneType.tarot
+              : conversation.conversationType! == "kahve"
+                  ? FortuneType.coffee
+                  : conversation.conversationType! == "astroloji"
+                      ? FortuneType.astrology
+                      : FortuneType.natalChart,
+          uid: uid,
+        ));
       } else {
         warningSnackBar("Bir sorun olustu daha sonra tekrar deneyin");
       }

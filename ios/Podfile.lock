@@ -1,5 +1,5 @@
 PODS:
-  - agora_rtc_engine (5.3.0):
+  - agora_rtc_engine (5.3.1):
     - AgoraIrisRTC_iOS (= 3.7.0.3)
     - AgoraRtcEngine_iOS (= 3.7.0.3)
     - Flutter
@@ -108,7 +108,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
-  agora_rtc_engine: eb26dd1d3993b69345235352d558e79bfdd84f40
+  agora_rtc_engine: 47e0ddc177bae1b85eb00d01a0ea546d87ce0b8b
   AgoraIrisRTC_iOS: d802443ae16f043e7b2805c978880eb62ee8154c
   AgoraRtcEngine_iOS: 549bb3853d5afb18fabca4197786f39f31141da8
   assets_audio_player: edee322b9cb625571b830b35872ead1a295fd917

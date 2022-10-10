@@ -14,7 +14,6 @@ class StatusSelectView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    profileController.getUserCredit();
     return Scaffold(
       body: Stack(
         children: [
